@@ -10,6 +10,8 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 **Phase 3 — Mines.** Turn-based, REST-only (`backend/games/mines/`). Mine positions are generated server-side and never sent to the client until the round ends; multiplier is the standard hypergeometric-odds formula scaled by a house edge.
 
+**Phase 4 — Blackjack.** Full REST state machine (`backend/games/blackjack/`): hit/stand/double/split/insurance, natural blackjack (3:2) and push detection, dealer stands on all 17s. Each hand and side bet uses its own ledger `round_id` suffix (e.g. `{round_id}:split`, `{round_id}:double`) so split/double/insurance wagers can't collide with each other's idempotency keys.
+
 ## Stack
 
 Same as Mirage Bank, by design — this is one ecosystem sharing one database:

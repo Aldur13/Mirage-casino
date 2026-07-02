@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blackjack — Mirage Casino</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="blackjack.css">
+</head>
+<body>
+  <header>
+    <h1>Blackjack</h1>
+    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
+  </header>
+
+  <main class="bj-main">
+    <div class="bj-controls">
+      <input type="number" id="bet-amount" placeholder="Bet (cents)" min="100" value="1000">
+      <button id="start-btn">Deal</button>
+    </div>
+
+    <section>
+      <h2>Dealer</h2>
+      <div id="dealer-hand" class="bj-hand"></div>
+    </section>
+
+    <section id="hands-container"></section>
+
+    <div class="bj-actions">
+      <button id="hit-btn" disabled>Hit</button>
+      <button id="stand-btn" disabled>Stand</button>
+      <button id="double-btn" disabled>Double</button>
+      <button id="split-btn" disabled>Split</button>
+      <button id="insure-yes-btn" disabled>Buy insurance</button>
+      <button id="insure-no-btn" disabled>Decline insurance</button>
+    </div>
+
+    <p id="bj-message" role="status"></p>
+  </main>
+
+  <script src="blackjack.js"></script>
+</body>
+</html>
