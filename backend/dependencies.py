@@ -61,3 +61,32 @@ def get_current_admin(current_user: dict = Depends(get_current_user)) -> dict:
             detail="Administrator privileges required",
         )
     return current_user
+
+
+def get_ws_user(token: str | None) -> dict | None:
+    """Same validation as get_current_user, adapted for WebSocket handshakes
+    (FastAPI's Depends(HTTPBearer) doesn't apply there). Returns None instead
+    of raising — the WS route decides whether an anonymous/invalid token
+    means "reject" or "allow as spectator"."""
+    if not token:
+        return None
+
+    try:
+        user_id = decode_token(token)
+    except jwt.PyJWTError:
+        return None
+
+    with get_session() as session:
+        result = session.run(
+            "MATCH (u:User {id: $user_id}) RETURN u",
+            user_id=user_id,
+        ).single()
+
+    if result is None:
+        return None
+
+    user = dict(result["u"])
+    if user["status"] in ("disabled", "frozen"):
+        return None
+
+    return user

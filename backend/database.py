@@ -41,12 +41,17 @@ def setup_constraints():
         constraints = [
             ("casino_profile_user_id_unique", "FOR (cp:CasinoProfile) REQUIRE cp.user_id IS UNIQUE"),
             ("wager_tx_id_unique", "FOR (t:WagerTransaction) REQUIRE t.id IS UNIQUE"),
+            ("crash_round_id_unique", "FOR (r:CrashRound) REQUIRE r.id IS UNIQUE"),
+            ("crash_round_nonce_unique", "FOR (r:CrashRound) REQUIRE r.nonce IS UNIQUE"),
+            ("crash_bet_id_unique", "FOR (b:CrashBet) REQUIRE b.id IS UNIQUE"),
         ]
         for name, rule in constraints:
             session.run(f"CREATE CONSTRAINT {name} IF NOT EXISTS {rule}")
 
         indexes = [
             "FOR (t:WagerTransaction) ON (t.game, t.round_id)",
+            "FOR (b:CrashBet) ON (b.round_id)",
+            "FOR (r:CrashRound) ON (r.status)",
         ]
         for idx_body in indexes:
             session.run(f"CREATE INDEX IF NOT EXISTS {idx_body}")

@@ -1,4 +1,12 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings
+
+# Resolved relative to this file rather than the process's cwd, so it
+# works whether uvicorn is launched from backend/ (`cd backend && ...`,
+# mirage-bank's convention) or from the repo root (e.g. the dev preview
+# tooling, which passes --app-dir backend without chdir-ing there).
+_ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
 
 
 class Settings(BaseSettings):
@@ -21,7 +29,7 @@ class Settings(BaseSettings):
     app_env: str = "development"
 
     model_config = {
-        "env_file": "../.env",
+        "env_file": str(_ENV_FILE),
         "extra": "ignore",
     }
 

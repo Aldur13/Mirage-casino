@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mirage-casino-backend",
+      "runtimeExecutable": "C:\\Users\\Aldur\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "main:app", "--reload", "--port", "8914", "--app-dir", "backend"],
+      "port": 8914
+    }
+  ]
+}

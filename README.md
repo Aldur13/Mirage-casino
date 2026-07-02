@@ -4,7 +4,9 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 ## Status
 
-**Phase 1 — Foundation.** Shared auth (same JWT secret, same Neo4j database, same `User`/`Account` schema as Mirage Bank) and an atomic wager/payout ledger primitive (`backend/ledger.py`). No games yet.
+**Phase 1 — Foundation.** Shared auth (same JWT secret, same Neo4j database, same `User`/`Account` schema as Mirage Bank) and an atomic wager/payout ledger primitive (`backend/ledger.py`).
+
+**Phase 2 — Crash.** Server-authoritative, provably-fair Crash game over WebSockets (`backend/games/crash/`). Bots fill quiet rounds using their own in-memory play-money — they never call `ledger.py` and are always flagged `is_bot` in every payload.
 
 ## Stack
 
@@ -47,7 +49,7 @@ Every future game (Crash, Blackjack, Mines, Crates) calls these two functions in
 
 In non-production (`APP_ENV != production`), `POST /account/_dev/wager` and `POST /account/_dev/payout` expose these directly for manual/integration testing.
 
-## Endpoints (Phase 1)
+## Endpoints
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
@@ -55,3 +57,19 @@ In non-production (`APP_ENV != production`), `POST /account/_dev/wager` and `POS
 | POST | `/auth/login` | — | Returns a JWT valid on both Mirage Bank and Mirage Casino |
 | GET | `/me` | Bearer | Current user profile |
 | GET | `/balance` | Bearer | Current bank Account balance (the casino balance) |
+| GET | `/games/crash/state` | — | Snapshot of the current round |
+| GET | `/games/crash/history` | — | Last 20 crashed rounds |
+| GET | `/games/crash/verify/{round_id}` | — | Recomputes the crash point from the revealed seed to prove it's provably fair |
+| WS | `/games/crash/ws?token=<jwt>` | optional | Live round updates; token required to place bets/cash out, omit to spectate |
+
+## Crash game
+
+One shared round for every connected client, driven by a single `asyncio` loop (`backend/games/crash/round_manager.py`):
+
+1. **Betting** (7s) — bets accepted, room topped up with bots if real attendance is low (`backend/games/crash/bots.py`).
+2. **Running** — multiplier climbs `e^(rate·t)`, broadcast every 100ms. Manual cashout settles at whatever the server's multiplier is at that instant; auto-cashout settles the moment the live multiplier reaches the target. Both paths call `ledger.settle_payout`, so a duplicate/retried cashout can't double-pay.
+3. **Crashed** — `server_seed` revealed, any still-active bets lose (wager was already taken), pause, next round.
+
+The crash point is generated **before** betting closes (`backend/games/crash/provably_fair.py`): the server publishes `sha256(server_seed)` immediately and reveals `server_seed` only after the crash, so nobody — including the house — can change the outcome after seeing who bet what. `GET /games/crash/verify/{round_id}` lets anyone recompute it independently.
+
+This assumes a single server process — scaling to multiple workers would need a shared pub/sub (e.g. Redis) to keep the round in sync, which isn't implemented yet.

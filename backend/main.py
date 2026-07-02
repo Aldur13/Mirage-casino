@@ -7,13 +7,16 @@ from fastapi.responses import FileResponse
 
 from config import settings
 from database import close_driver, setup_constraints
-from routes import account_dev_router, account_router, auth_router
+from games.crash.round_manager import round_manager
+from routes import account_dev_router, account_router, auth_router, crash_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_constraints()
+    round_manager.start()
     yield
+    round_manager.stop()
     close_driver()
 
 
@@ -40,6 +43,7 @@ def health():
 
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(account_router, tags=["Account"])
+app.include_router(crash_router)
 
 if settings.app_env != "production":
     app.include_router(account_dev_router, tags=["Dev"])

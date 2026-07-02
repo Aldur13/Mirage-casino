@@ -1,0 +1,98 @@
+.crash-main {
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.crash-board {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.multiplier {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 1rem 0;
+}
+
+.multiplier.crashed {
+  color: var(--danger);
+}
+
+.phase-banner {
+  color: var(--muted);
+  min-height: 1.2rem;
+}
+
+.bet-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.bet-controls input {
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  border: 1px solid #33374470;
+  background: #10121850;
+  color: var(--text);
+  width: 160px;
+}
+
+.crash-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.crash-side > div {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.crash-side h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.crash-side ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+.crash-side li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.15rem 0;
+}
+
+.bot-badge {
+  font-size: 0.7rem;
+  color: #14161c;
+  background: var(--muted);
+  border-radius: 3px;
+  padding: 0 0.3rem;
+  margin-left: 0.35rem;
+}
+
+code {
+  word-break: break-all;
+}
+
+@media (max-width: 700px) {
+  .crash-main { grid-template-columns: 1fr; }
+}
