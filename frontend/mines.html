@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mines — Mirage Casino</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="mines.css">
+</head>
+<body>
+  <header>
+    <h1>Mines</h1>
+    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
+  </header>
+
+  <main class="mines-main">
+    <div class="mines-controls">
+      <input type="number" id="bet-amount" placeholder="Bet (cents)" min="100" value="1000">
+      <input type="number" id="mine-count" placeholder="Mines" min="1" max="24" value="3">
+      <button id="start-btn">Start round</button>
+      <button id="cashout-btn" disabled>Cash out</button>
+    </div>
+    <p>Current multiplier: <strong id="multiplier">1.00x</strong></p>
+    <p id="mines-message" role="status"></p>
+    <div id="grid" class="mines-grid"></div>
+  </main>
+
+  <script src="mines.js"></script>
+</body>
+</html>

@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 from config import settings
 from database import close_driver, setup_constraints
 from games.crash.round_manager import round_manager
-from routes import account_dev_router, account_router, auth_router, crash_router
+from routes import account_dev_router, account_router, auth_router, crash_router, mines_router
 
 
 @asynccontextmanager
@@ -44,6 +44,7 @@ def health():
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(account_router, tags=["Account"])
 app.include_router(crash_router)
+app.include_router(mines_router)
 
 if settings.app_env != "production":
     app.include_router(account_dev_router, tags=["Dev"])

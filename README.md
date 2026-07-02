@@ -8,6 +8,8 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 **Phase 2 — Crash.** Server-authoritative, provably-fair Crash game over WebSockets (`backend/games/crash/`). Bots fill quiet rounds using their own in-memory play-money — they never call `ledger.py` and are always flagged `is_bot` in every payload.
 
+**Phase 3 — Mines.** Turn-based, REST-only (`backend/games/mines/`). Mine positions are generated server-side and never sent to the client until the round ends; multiplier is the standard hypergeometric-odds formula scaled by a house edge.
+
 ## Stack
 
 Same as Mirage Bank, by design — this is one ecosystem sharing one database:

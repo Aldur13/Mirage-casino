@@ -1,0 +1,52 @@
+.mines-main {
+  max-width: 600px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.mines-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.mines-controls input {
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  border: 1px solid #33374470;
+  background: #10121850;
+  color: var(--text);
+  width: 120px;
+}
+
+.mines-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.mines-tile {
+  aspect-ratio: 1;
+  background: var(--surface);
+  border: 1px solid #33374470;
+  border-radius: var(--radius);
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.mines-tile:disabled {
+  cursor: default;
+}
+
+.mines-tile.safe {
+  background: #1f6f43;
+}
+
+.mines-tile.mine {
+  background: var(--danger);
+}
