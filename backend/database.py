@@ -46,6 +46,9 @@ def setup_constraints():
             ("crash_bet_id_unique", "FOR (b:CrashBet) REQUIRE b.id IS UNIQUE"),
             ("mines_round_id_unique", "FOR (r:MinesRound) REQUIRE r.id IS UNIQUE"),
             ("blackjack_round_id_unique", "FOR (r:BlackjackRound) REQUIRE r.id IS UNIQUE"),
+            ("crate_id_unique", "FOR (c:Crate) REQUIRE c.id IS UNIQUE"),
+            ("crate_item_id_unique", "FOR (i:CrateItem) REQUIRE i.id IS UNIQUE"),
+            ("inventory_item_id_unique", "FOR (i:InventoryItem) REQUIRE i.id IS UNIQUE"),
         ]
         for name, rule in constraints:
             session.run(f"CREATE CONSTRAINT {name} IF NOT EXISTS {rule}")
@@ -56,6 +59,7 @@ def setup_constraints():
             "FOR (r:CrashRound) ON (r.status)",
             "FOR (r:MinesRound) ON (r.user_id, r.status)",
             "FOR (r:BlackjackRound) ON (r.user_id, r.status)",
+            "FOR (i:InventoryItem) ON (i.user_id, i.status)",
         ]
         for idx_body in indexes:
             session.run(f"CREATE INDEX IF NOT EXISTS {idx_body}")

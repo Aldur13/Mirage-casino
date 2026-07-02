@@ -1,0 +1,46 @@
+.crates-main {
+  max-width: 800px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.crate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.crate-card, .item-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.item-card.rarity-common { border: 1px solid #6b6b6b; }
+.item-card.rarity-uncommon { border: 1px solid #3fa34d; }
+.item-card.rarity-rare { border: 1px solid #3a7bd5; }
+.item-card.rarity-epic { border: 1px solid #9b4dca; }
+.item-card.rarity-legendary { border: 1px solid var(--accent); }
+
+.crate-card .emoji, .item-card .emoji {
+  font-size: 2rem;
+}
+
+.crate-card button, .item-card button {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.4rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #14161c;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.item-card button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

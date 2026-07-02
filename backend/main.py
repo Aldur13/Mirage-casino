@@ -8,14 +8,17 @@ from fastapi.responses import FileResponse
 from config import settings
 from database import close_driver, setup_constraints
 from games.crash.round_manager import round_manager
+from games.crates.repository import seed_default_crates
 from routes import (
-    account_dev_router, account_router, auth_router, blackjack_router, crash_router, mines_router,
+    account_dev_router, account_router, auth_router, blackjack_router, crash_router,
+    crates_router, mines_router,
 )
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_constraints()
+    seed_default_crates()
     round_manager.start()
     yield
     round_manager.stop()
@@ -48,6 +51,7 @@ app.include_router(account_router, tags=["Account"])
 app.include_router(crash_router)
 app.include_router(mines_router)
 app.include_router(blackjack_router)
+app.include_router(crates_router)
 
 if settings.app_env != "production":
     app.include_router(account_dev_router, tags=["Dev"])

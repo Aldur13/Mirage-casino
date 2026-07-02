@@ -12,6 +12,8 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 **Phase 4 — Blackjack.** Full REST state machine (`backend/games/blackjack/`): hit/stand/double/split/insurance, natural blackjack (3:2) and push detection, dealer stands on all 17s. Each hand and side bet uses its own ledger `round_id` suffix (e.g. `{round_id}:split`, `{round_id}:double`) so split/double/insurance wagers can't collide with each other's idempotency keys.
 
+**Phase 5 — Crates.** Inventory system (`backend/games/crates/`). Opening a crate is a wager (`ledger.place_wager`); items sit in the player's inventory until sold (`ledger.settle_payout`) — no automatic cash-out on open, matching how case-opening games actually work. Item ownership (`(:User)-[:OWNS_ITEM]->(:InventoryItem)`) is modeled so a future trade is just a relationship change, not a schema change.
+
 ## Stack
 
 Same as Mirage Bank, by design — this is one ecosystem sharing one database:
