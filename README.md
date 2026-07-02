@@ -14,6 +14,8 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 **Phase 5 — Crates.** Inventory system (`backend/games/crates/`). Opening a crate is a wager (`ledger.place_wager`); items sit in the player's inventory until sold (`ledger.settle_payout`) — no automatic cash-out on open, matching how case-opening games actually work. Item ownership (`(:User)-[:OWNS_ITEM]->(:InventoryItem)`) is modeled so a future trade is just a relationship change, not a schema change.
 
+**Phase 6 — Statistics.** `backend/stats/` computes everything on read from each game's own data — no separate running-counter table to keep in sync. `GET /statistics/me` powers the profile page.
+
 ## Stack
 
 Same as Mirage Bank, by design — this is one ecosystem sharing one database:
