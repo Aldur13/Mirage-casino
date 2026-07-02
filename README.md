@@ -18,6 +18,8 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 **Phase 7 — Leaderboards.** `backend/leaderboards/` — global rankings (richest, biggest win, most profit, most wagered, most games played, biggest Crash cashout, most legendary items) plus daily/weekly/monthly profit leaderboards filtered by transaction timestamp.
 
+**Phase 8 — Achievements.** `backend/achievements/` — an expandable catalog (`definitions.py`) evaluated lazily against a stats-derived context whenever `GET /achievements/me` is called. Unlocks are persisted (`MERGE`) so they're permanent even if the underlying stat later drops (e.g. balance spent below the Millionaire threshold).
+
 ## Stack
 
 Same as Mirage Bank, by design — this is one ecosystem sharing one database:

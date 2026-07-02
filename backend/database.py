@@ -49,6 +49,7 @@ def setup_constraints():
             ("crate_id_unique", "FOR (c:Crate) REQUIRE c.id IS UNIQUE"),
             ("crate_item_id_unique", "FOR (i:CrateItem) REQUIRE i.id IS UNIQUE"),
             ("inventory_item_id_unique", "FOR (i:InventoryItem) REQUIRE i.id IS UNIQUE"),
+            ("achievement_id_unique", "FOR (a:Achievement) REQUIRE a.id IS UNIQUE"),
         ]
         for name, rule in constraints:
             session.run(f"CREATE CONSTRAINT {name} IF NOT EXISTS {rule}")
