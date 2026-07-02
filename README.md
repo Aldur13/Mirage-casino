@@ -16,6 +16,8 @@ A real-money-balance casino app built on top of [Mirage Bank](https://github.com
 
 **Phase 6 — Statistics.** `backend/stats/` computes everything on read from each game's own data — no separate running-counter table to keep in sync. `GET /statistics/me` powers the profile page.
 
+**Phase 7 — Leaderboards.** `backend/leaderboards/` — global rankings (richest, biggest win, most profit, most wagered, most games played, biggest Crash cashout, most legendary items) plus daily/weekly/monthly profit leaderboards filtered by transaction timestamp.
+
 ## Stack
 
 Same as Mirage Bank, by design — this is one ecosystem sharing one database:
