@@ -5,7 +5,7 @@ player cashes out and the reveal is purely informational at that point).
 """
 import random
 
-HOUSE_EDGE = 0.97
+HOUSE_EDGE = 0.99
 MIN_TOTAL_TILES = 4
 MAX_TOTAL_TILES = 64
 MIN_BET_CENTS = 100

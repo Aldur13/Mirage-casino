@@ -16,6 +16,8 @@ class HandView(BaseModel):
     status: str  # active | stood | busted | blackjack | doubled
     outcome: Optional[str] = None
     payout_cents: Optional[int] = None
+    value: int
+    is_soft: bool = False
 
 
 class RoundStateResponse(BaseModel):
@@ -25,6 +27,7 @@ class RoundStateResponse(BaseModel):
     active_hand_index: int
     dealer_cards: list[dict]
     dealer_hidden: bool
+    dealer_value: Optional[int] = None
     insurance_available: bool
     insurance_bet_cents: Optional[int] = None
     insurance_outcome: Optional[str] = None

@@ -16,7 +16,7 @@ import hmac
 import secrets
 from math import floor
 
-HOUSE_EDGE_DIVISOR = 33  # 1-in-33 rounds instantly crash at 1.00x (~3% house edge)
+HOUSE_EDGE_DIVISOR = 100  # 1-in-100 rounds instantly crash at 1.00x (~1% house edge)
 
 
 def generate_server_seed() -> str:

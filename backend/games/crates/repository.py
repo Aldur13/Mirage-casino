@@ -12,21 +12,25 @@ _DEFAULT_CRATES = [
         "name": "Starter Crate",
         "price_cents": 500,
         "description": "A cheap crate with modest odds at something rare.",
+        # Sell-value expectation is tuned to ~1% house edge (weighted sum of
+        # sell_value_cents ~= 99% of price_cents) — rarity odds (drop_weight)
+        # and the value/sell_value ratio per item are unchanged, only the
+        # scale of the payouts.
         "items": [
             {"id": "starter-common-coin", "name": "Copper Trinket", "rarity": "common",
-             "value_cents": 200, "sell_value_cents": 150, "image_url": "🪙",
+             "value_cents": 170, "sell_value_cents": 127, "image_url": "🪙",
              "description": "Barely worth melting down.", "drop_weight": 600},
             {"id": "starter-uncommon-charm", "name": "Silver Charm", "rarity": "uncommon",
-             "value_cents": 600, "sell_value_cents": 450, "image_url": "🔮",
+             "value_cents": 509, "sell_value_cents": 381, "image_url": "🔮",
              "description": "A minor good-luck charm.", "drop_weight": 280},
             {"id": "starter-rare-ring", "name": "Sapphire Ring", "rarity": "rare",
-             "value_cents": 2500, "sell_value_cents": 1800, "image_url": "💍",
+             "value_cents": 2119, "sell_value_cents": 1526, "image_url": "💍",
              "description": "Catches the light nicely.", "drop_weight": 100},
             {"id": "starter-epic-crown", "name": "Jeweled Crown", "rarity": "epic",
-             "value_cents": 8000, "sell_value_cents": 6000, "image_url": "👑",
+             "value_cents": 6781, "sell_value_cents": 5086, "image_url": "👑",
              "description": "Fit for minor royalty.", "drop_weight": 18},
             {"id": "starter-legendary-gem", "name": "Mirage Heartstone", "rarity": "legendary",
-             "value_cents": 50000, "sell_value_cents": 40000, "image_url": "💎",
+             "value_cents": 42380, "sell_value_cents": 33904, "image_url": "💎",
              "description": "Legend says it's never the same color twice.", "drop_weight": 2},
         ],
     },
@@ -37,19 +41,19 @@ _DEFAULT_CRATES = [
         "description": "Expensive, but the floor and ceiling are both much higher.",
         "items": [
             {"id": "hr-common-watch", "name": "Steel Watch", "rarity": "common",
-             "value_cents": 3000, "sell_value_cents": 2200, "image_url": "⌚",
+             "value_cents": 1418, "sell_value_cents": 1040, "image_url": "⌚",
              "description": "Keeps decent time.", "drop_weight": 500},
             {"id": "hr-uncommon-vase", "name": "Porcelain Vase", "rarity": "uncommon",
-             "value_cents": 6000, "sell_value_cents": 4500, "image_url": "🏺",
+             "value_cents": 2835, "sell_value_cents": 2127, "image_url": "🏺",
              "description": "Older than it looks.", "drop_weight": 300},
             {"id": "hr-rare-statue", "name": "Golden Statue", "rarity": "rare",
-             "value_cents": 20000, "sell_value_cents": 15000, "image_url": "🗿",
+             "value_cents": 9451, "sell_value_cents": 7088, "image_url": "🗿",
              "description": "Surprisingly heavy.", "drop_weight": 130},
             {"id": "hr-epic-chalice", "name": "Ancient Chalice", "rarity": "epic",
-             "value_cents": 60000, "sell_value_cents": 45000, "image_url": "🏆",
+             "value_cents": 28353, "sell_value_cents": 21265, "image_url": "🏆",
              "description": "Museums have asked about this one.", "drop_weight": 55},
             {"id": "hr-legendary-orb", "name": "Mirage Eternity Orb", "rarity": "legendary",
-             "value_cents": 300000, "sell_value_cents": 240000, "image_url": "🔱",
+             "value_cents": 141765, "sell_value_cents": 113412, "image_url": "🔱",
              "description": "The rarest pull in the game.", "drop_weight": 15},
         ],
     },
@@ -63,8 +67,9 @@ def seed_default_crates() -> None:
             session.run(
                 """
                 MERGE (c:Crate {id: $id})
-                ON CREATE SET c.name = $name, c.price_cents = $price_cents,
-                              c.description = $description, c.created_at = $now, c.active = true
+                ON CREATE SET c.created_at = $now
+                SET c.name = $name, c.price_cents = $price_cents,
+                    c.description = $description, c.active = true
                 """,
                 id=crate["id"], name=crate["name"], price_cents=crate["price_cents"],
                 description=crate["description"], now=now,
@@ -74,10 +79,10 @@ def seed_default_crates() -> None:
                     """
                     MATCH (c:Crate {id: $crate_id})
                     MERGE (i:CrateItem {id: $id})
-                    ON CREATE SET i.crate_id = $crate_id, i.name = $name, i.rarity = $rarity,
-                                  i.value_cents = $value_cents, i.sell_value_cents = $sell_value_cents,
-                                  i.image_url = $image_url, i.description = $description,
-                                  i.drop_weight = $drop_weight
+                    SET i.crate_id = $crate_id, i.name = $name, i.rarity = $rarity,
+                        i.value_cents = $value_cents, i.sell_value_cents = $sell_value_cents,
+                        i.image_url = $image_url, i.description = $description,
+                        i.drop_weight = $drop_weight
                     MERGE (c)-[:CONTAINS]->(i)
                     """,
                     crate_id=crate["id"], **item,

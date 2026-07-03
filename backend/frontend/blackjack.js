@@ -2,6 +2,7 @@ const els = {
   betAmount: document.getElementById("bet-amount"),
   startBtn: document.getElementById("start-btn"),
   dealerHand: document.getElementById("dealer-hand"),
+  dealerValue: document.getElementById("dealer-value"),
   handsContainer: document.getElementById("hands-container"),
   hitBtn: document.getElementById("hit-btn"),
   standBtn: document.getElementById("stand-btn"),
@@ -14,8 +15,9 @@ const els = {
 
 let currentRoundId = null;
 
-function showMessage(text) {
+function showMessage(text, isError = false) {
   els.message.textContent = text;
+  els.message.classList.toggle("ok", !isError);
 }
 
 async function api(path, options = {}) {
@@ -50,6 +52,9 @@ function render(state) {
     hidden.className = "bj-card";
     hidden.textContent = "??";
     els.dealerHand.appendChild(hidden);
+    els.dealerValue.textContent = `(${state.dealer_value} showing)`;
+  } else {
+    els.dealerValue.textContent = `(${state.dealer_value})`;
   }
 
   els.handsContainer.innerHTML = "";
@@ -57,12 +62,19 @@ function render(state) {
     const block = document.createElement("div");
     block.className = "bj-hand-block" + (i === state.active_hand_index && state.phase === "player_turn" ? " active" : "");
     const title = document.createElement("h3");
-    title.textContent = `Hand ${i + 1} — ${hand.status}${hand.outcome ? ` (${hand.outcome})` : ""}`;
+    const valueLabel = hand.is_soft && hand.value <= 21 ? `soft ${hand.value}` : hand.value;
+    title.textContent = `Hand ${i + 1} — ${valueLabel} — ${hand.status}${hand.outcome ? ` (${hand.outcome})` : ""}`;
     block.appendChild(title);
     const cardsDiv = document.createElement("div");
     cardsDiv.className = "bj-hand";
     block.appendChild(cardsDiv);
     renderHand(cardsDiv, hand.cards);
+    if (hand.payout_cents != null) {
+      const payout = document.createElement("div");
+      payout.className = "hand-payout num";
+      payout.textContent = `Payout: €${(hand.payout_cents / 100).toFixed(2)}`;
+      block.appendChild(payout);
+    }
     els.handsContainer.appendChild(block);
   });
 
@@ -76,7 +88,10 @@ function render(state) {
   els.startBtn.disabled = active || state.phase === "insurance_pending";
 
   if (state.phase === "settled") {
-    showMessage(`Round settled — total payout €${(state.total_payout_cents / 100).toFixed(2)}`);
+    const won = state.total_payout_cents > 0;
+    showMessage(`Round settled — total payout €${(state.total_payout_cents / 100).toFixed(2)}`, !won);
+  } else if (state.phase === "insurance_pending") {
+    showMessage("Dealer is showing an Ace — insurance available.");
   } else {
     showMessage("");
   }
@@ -84,13 +99,14 @@ function render(state) {
 
 async function start() {
   try {
+    const betCents = Math.round(parseFloat(els.betAmount.value) * 100);
     const state = await api("/games/blackjack/start", {
       method: "POST",
-      body: JSON.stringify({ bet_amount_cents: parseInt(els.betAmount.value, 10) }),
+      body: JSON.stringify({ bet_amount_cents: betCents }),
     });
     render(state);
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 
@@ -100,7 +116,7 @@ async function action(path, options = {}) {
     const state = await api(`/games/blackjack/round/${currentRoundId}${path}`, { method: "POST", ...options });
     render(state);
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 

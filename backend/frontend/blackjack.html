@@ -36,14 +36,14 @@
       <div class="card bj-board">
         <div class="bj-controls">
           <div>
-            <label for="bet-amount">Bet (cents)</label>
-            <input type="number" id="bet-amount" min="100" value="1000">
+            <label for="bet-amount">Bet (€)</label>
+            <input type="number" id="bet-amount" min="1" step="0.01" value="10.00">
           </div>
           <button id="start-btn" class="btn-primary">Deal</button>
         </div>
 
         <section class="bj-section">
-          <h2>Dealer</h2>
+          <h2>Dealer <span id="dealer-value" class="hand-value"></span></h2>
           <div id="dealer-hand" class="bj-hand"></div>
         </section>
 
@@ -52,9 +52,9 @@
         <div class="bj-actions">
           <button id="hit-btn" disabled>Hit</button>
           <button id="stand-btn" disabled>Stand</button>
-          <button id="double-btn" disabled>Double</button>
-          <button id="split-btn" disabled>Split</button>
-          <button id="insure-yes-btn" class="btn-gold" disabled>Buy insurance</button>
+          <button id="double-btn" disabled title="Double your bet, draw exactly one more card, then stand">Double</button>
+          <button id="split-btn" disabled title="Split two matching cards into two separate hands, each with its own bet">Split</button>
+          <button id="insure-yes-btn" class="btn-gold" disabled title="Side bet (half your original bet) that pays 3x if the dealer has blackjack — only offered when the dealer shows an Ace">Buy insurance</button>
           <button id="insure-no-btn" class="btn-ghost" disabled>Decline insurance</button>
         </div>
 

@@ -63,3 +63,16 @@
   border-color: var(--indigo);
   box-shadow: 0 0 0 4px rgba(124, 131, 255, 0.15);
 }
+
+.hand-value {
+  font-weight: 700;
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.hand-payout {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
