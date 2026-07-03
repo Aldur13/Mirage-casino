@@ -6,10 +6,12 @@
   },
   "steps": {
     "install": {
+      "inputs": [{ "local": true, "include": ["."] }],
       "commands": ["pip install -r backend/requirements.txt"]
     }
   },
   "deploy": {
+    "inputs": [{ "step": "install", "include": ["."] }],
     "startCommand": "python -m uvicorn main:app --app-dir backend --host 0.0.0.0 --port $PORT"
   }
 }
