@@ -1,5 +1,7 @@
 const els = {
   multiplier: document.getElementById("multiplier"),
+  graph: document.getElementById("crash-graph"),
+  graphLine: document.getElementById("crash-line"),
   phaseBanner: document.getElementById("phase-banner"),
   betAmount: document.getElementById("bet-amount"),
   autoCashout: document.getElementById("auto-cashout"),
@@ -13,16 +15,42 @@ const els = {
 };
 
 let hasActiveBet = false;
+let graphPoints = []; // multiplier values sampled this round, oldest first
 
-function showMessage(text) {
+function showMessage(text, isError = false) {
   els.message.textContent = text;
+  els.message.classList.toggle("ok", !isError);
 }
 
 function addPlayerRow(displayName, amountCents, isBot, extra = "") {
   const li = document.createElement("li");
   const badge = isBot ? '<span class="bot-badge">BOT</span>' : "";
-  li.innerHTML = `<span>${displayName}${badge}</span><span>${(amountCents / 100).toFixed(2)} ${extra}</span>`;
+  li.innerHTML = `<span>${displayName}${badge}</span><span>€${(amountCents / 100).toFixed(2)} ${extra}</span>`;
   els.playerList.appendChild(li);
+}
+
+function resetGraph() {
+  graphPoints = [1];
+  els.graph.classList.remove("crashed");
+  drawGraph();
+}
+
+function drawGraph() {
+  const width = 300;
+  const height = 100;
+  const pad = 6;
+  if (graphPoints.length < 2) {
+    els.graphLine.setAttribute("points", `${pad},${height - pad} ${width - pad},${height - pad}`);
+    return;
+  }
+  // Log scale so the line stays readable as the multiplier grows exponentially.
+  const maxLog = Math.log2(Math.max(...graphPoints, 2));
+  const points = graphPoints.map((m, i) => {
+    const x = pad + (i / (graphPoints.length - 1)) * (width - pad * 2);
+    const y = height - pad - (Math.log2(Math.max(m, 1)) / maxLog) * (height - pad * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+  els.graphLine.setAttribute("points", points.join(" "));
 }
 
 function resetRound() {
@@ -32,6 +60,7 @@ function resetRound() {
   hasActiveBet = false;
   els.cashoutBtn.disabled = true;
   els.betBtn.disabled = false;
+  resetGraph();
 }
 
 function wsUrl() {
@@ -51,6 +80,8 @@ socket.addEventListener("message", (event) => {
       els.seedHash.textContent = msg.server_seed_hash || "—";
       if (msg.status === "running" && msg.current_multiplier) {
         els.multiplier.textContent = `${msg.current_multiplier.toFixed(2)}x`;
+        graphPoints = [1, msg.current_multiplier];
+        drawGraph();
       }
       (msg.bets || []).forEach((b) => addPlayerRow(b.display_name, b.amount_cents, b.is_bot));
       break;
@@ -73,6 +104,8 @@ socket.addEventListener("message", (event) => {
 
     case "tick":
       els.multiplier.textContent = `${msg.multiplier.toFixed(2)}x`;
+      graphPoints.push(msg.multiplier);
+      drawGraph();
       break;
 
     case "cashed_out":
@@ -85,6 +118,7 @@ socket.addEventListener("message", (event) => {
     case "crashed":
       els.multiplier.textContent = `${msg.crash_point.toFixed(2)}x`;
       els.multiplier.classList.add("crashed");
+      els.graph.classList.add("crashed");
       els.phaseBanner.textContent = "Crashed — next round soon";
       els.seedReveal.textContent = `Seed: ${msg.server_seed}`;
       els.cashoutBtn.disabled = true;
@@ -93,7 +127,7 @@ socket.addEventListener("message", (event) => {
       break;
 
     case "error":
-      showMessage(msg.message);
+      showMessage(msg.message, true);
       break;
   }
 });
@@ -109,7 +143,7 @@ function prependCrash(crashPoint) {
 }
 
 els.betBtn.addEventListener("click", () => {
-  const amount_cents = parseInt(els.betAmount.value, 10);
+  const amount_cents = Math.round(parseFloat(els.betAmount.value) * 100);
   const auto = parseFloat(els.autoCashout.value);
   socket.send(JSON.stringify({
     action: "place_bet",
@@ -124,3 +158,5 @@ els.betBtn.addEventListener("click", () => {
 els.cashoutBtn.addEventListener("click", () => {
   socket.send(JSON.stringify({ action: "cashout" }));
 });
+
+resetGraph();

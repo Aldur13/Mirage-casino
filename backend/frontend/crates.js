@@ -4,8 +4,9 @@ const els = {
   message: document.getElementById("crates-message"),
 };
 
-function showMessage(text) {
+function showMessage(text, isError = false) {
   els.message.textContent = text;
+  els.message.classList.toggle("ok", !isError);
 }
 
 async function api(path, options = {}) {
@@ -55,7 +56,7 @@ async function openCrate(crateId) {
     showMessage(`You got: ${result.item.name} (${result.item.rarity})`);
     await loadInventory();
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 
@@ -83,7 +84,7 @@ async function sellItem(itemId) {
     showMessage(`Sold for €${(result.payout_cents / 100).toFixed(2)}`);
     await loadInventory();
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 

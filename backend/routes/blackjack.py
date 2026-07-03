@@ -78,6 +78,11 @@ def _advance_or_settle(state: dict, user_id: str) -> None:
     _settle_non_bust_hands(state, user_id)
 
 
+def _hand_view(hand: dict) -> dict:
+    value, is_soft = game.hand_value(hand["cards"])
+    return {**hand, "value": value, "is_soft": is_soft}
+
+
 def _state_response(round_id: str, state: dict) -> RoundStateResponse:
     active_hand = state["hands"][state["active_hand_index"]] if state["phase"] == "player_turn" else None
     can_double = bool(active_hand and len(active_hand["cards"]) == 2 and active_hand["status"] == "active")
@@ -89,11 +94,14 @@ def _state_response(round_id: str, state: dict) -> RoundStateResponse:
     if state["phase"] == "settled":
         total_payout = sum(h["payout_cents"] or 0 for h in state["hands"])
 
+    visible_dealer_cards = state["dealer_cards"] if not state["dealer_hidden"] else state["dealer_cards"][:1]
+
     return RoundStateResponse(
-        round_id=round_id, phase=state["phase"], hands=state["hands"],
+        round_id=round_id, phase=state["phase"], hands=[_hand_view(h) for h in state["hands"]],
         active_hand_index=state["active_hand_index"],
-        dealer_cards=state["dealer_cards"] if not state["dealer_hidden"] else state["dealer_cards"][:1],
+        dealer_cards=visible_dealer_cards,
         dealer_hidden=state["dealer_hidden"],
+        dealer_value=game.hand_value(visible_dealer_cards)[0],
         insurance_available=state["phase"] == "insurance_pending",
         insurance_bet_cents=state.get("insurance_bet_cents"),
         insurance_outcome=state.get("insurance_outcome"),

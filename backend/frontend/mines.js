@@ -11,8 +11,9 @@ const els = {
 let currentRound = null;
 const TOTAL_TILES = 25;
 
-function showMessage(text) {
+function showMessage(text, isError = false) {
   els.message.textContent = text;
+  els.message.classList.toggle("ok", !isError);
 }
 
 async function api(path, options = {}) {
@@ -55,24 +56,25 @@ function updateFromRound(round) {
   els.startBtn.disabled = round.status === "active";
   renderGrid(round);
 
-  if (round.status === "busted") showMessage("Busted! Better luck next round.");
+  if (round.status === "busted") showMessage("Busted! Better luck next round.", true);
   else if (round.status === "cashed_out") showMessage(`Cashed out for €${(round.payout_cents / 100).toFixed(2)}`);
   else showMessage("");
 }
 
 async function startRound() {
   try {
+    const betCents = Math.round(parseFloat(els.betAmount.value) * 100);
     const round = await api("/games/mines/start", {
       method: "POST",
       body: JSON.stringify({
-        bet_amount_cents: parseInt(els.betAmount.value, 10),
+        bet_amount_cents: betCents,
         total_tiles: TOTAL_TILES,
         mine_count: parseInt(els.mineCount.value, 10),
       }),
     });
     updateFromRound(round);
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 
@@ -85,7 +87,7 @@ async function revealTile(index) {
     });
     updateFromRound(round);
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 
@@ -95,7 +97,7 @@ async function cashout() {
     const round = await api(`/games/mines/round/${currentRound.round_id}/cashout`, { method: "POST" });
     updateFromRound(round);
   } catch (err) {
-    showMessage(err.message);
+    showMessage(err.message, true);
   }
 }
 
