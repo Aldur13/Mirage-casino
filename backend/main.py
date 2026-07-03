@@ -60,7 +60,7 @@ if settings.app_env != "production":
     app.include_router(account_dev_router, tags=["Dev"])
 
 
-frontend_dir = Path(__file__).parent.parent / "frontend"
+frontend_dir = Path(__file__).parent / "frontend"
 
 
 @app.get("/{full_path:path}", include_in_schema=False)
