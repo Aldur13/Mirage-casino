@@ -1,5 +1,3 @@
-const TOKEN_KEY = "mirage_casino_token";
-
 const els = {
   betAmount: document.getElementById("bet-amount"),
   mineCount: document.getElementById("mine-count"),
@@ -58,7 +56,7 @@ function updateFromRound(round) {
   renderGrid(round);
 
   if (round.status === "busted") showMessage("Busted! Better luck next round.");
-  else if (round.status === "cashed_out") showMessage(`Cashed out for ${(round.payout_cents / 100).toFixed(2)}`);
+  else if (round.status === "cashed_out") showMessage(`Cashed out for €${(round.payout_cents / 100).toFixed(2)}`);
   else showMessage("");
 }
 

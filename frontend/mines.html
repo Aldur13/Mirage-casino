@@ -8,23 +8,53 @@
 <link rel="stylesheet" href="mines.css">
 </head>
 <body>
-  <header>
-    <h1>Mines</h1>
-    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/" class="brand">Mirage Casino</a>
+      <div class="balance-pill">
+        <div class="label">Balance</div>
+        <div class="value num" id="sidebar-balance">—</div>
+      </div>
+      <nav class="nav-links">
+        <a href="/crash.html">Crash</a>
+        <a href="/mines.html">Mines</a>
+        <a href="/blackjack.html">Blackjack</a>
+        <a href="/crates.html">Crates</a>
+        <a href="/leaderboards.html">Leaderboards</a>
+        <a href="/profile.html">Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span id="sidebar-name"></span>
+        <button class="btn-ghost" id="sidebar-logout">Log out</button>
+      </div>
+    </aside>
 
-  <main class="mines-main">
-    <div class="mines-controls">
-      <input type="number" id="bet-amount" placeholder="Bet (cents)" min="100" value="1000">
-      <input type="number" id="mine-count" placeholder="Mines" min="1" max="24" value="3">
-      <button id="start-btn">Start round</button>
-      <button id="cashout-btn" disabled>Cash out</button>
-    </div>
-    <p>Current multiplier: <strong id="multiplier">1.00x</strong></p>
-    <p id="mines-message" role="status"></p>
-    <div id="grid" class="mines-grid"></div>
-  </main>
+    <main class="content">
+      <h1>Mines</h1>
+      <p class="eyebrow">Reveal safe tiles, cash out any time</p>
 
+      <div class="card mines-board">
+        <div class="mines-controls">
+          <div>
+            <label for="bet-amount">Bet (cents)</label>
+            <input type="number" id="bet-amount" min="100" value="1000">
+          </div>
+          <div>
+            <label for="mine-count">Mines</label>
+            <input type="number" id="mine-count" min="1" max="24" value="3">
+          </div>
+          <button id="start-btn" class="btn-primary">Start round</button>
+          <button id="cashout-btn" class="btn-gold" disabled>Cash out</button>
+        </div>
+
+        <p class="mines-multiplier">Multiplier <strong id="multiplier" class="num">1.00x</strong></p>
+        <p id="mines-message" class="message" role="status"></p>
+        <div id="grid" class="mines-grid"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="shell.js"></script>
   <script src="mines.js"></script>
 </body>
 </html>

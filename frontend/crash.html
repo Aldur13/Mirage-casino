@@ -8,41 +8,71 @@
 <link rel="stylesheet" href="crash.css">
 </head>
 <body>
-  <header>
-    <h1>Crash</h1>
-    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/" class="brand">Mirage Casino</a>
+      <div class="balance-pill">
+        <div class="label">Balance</div>
+        <div class="value num" id="sidebar-balance">—</div>
+      </div>
+      <nav class="nav-links">
+        <a href="/crash.html">Crash</a>
+        <a href="/mines.html">Mines</a>
+        <a href="/blackjack.html">Blackjack</a>
+        <a href="/crates.html">Crates</a>
+        <a href="/leaderboards.html">Leaderboards</a>
+        <a href="/profile.html">Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span id="sidebar-name"></span>
+        <button class="btn-ghost" id="sidebar-logout">Log out</button>
+      </div>
+    </aside>
 
-  <main class="crash-main">
-    <section class="crash-board">
-      <div id="multiplier" class="multiplier">1.00x</div>
-      <div id="phase-banner" class="phase-banner"></div>
-      <div class="bet-controls">
-        <input type="number" id="bet-amount" placeholder="Bet (cents)" min="100" value="1000">
-        <input type="number" id="auto-cashout" placeholder="Auto cashout (optional, e.g. 2.00)" min="1.01" step="0.01">
-        <button id="bet-btn">Place bet</button>
-        <button id="cashout-btn" disabled>Cash out</button>
-      </div>
-      <p id="crash-message" role="status"></p>
-    </section>
+    <main class="content">
+      <h1>Crash</h1>
+      <p class="eyebrow">Shared live round · provably fair</p>
 
-    <section class="crash-side">
-      <div>
-        <h2>Players this round</h2>
-        <ul id="player-list"></ul>
-      </div>
-      <div>
-        <h2>Recent crashes</h2>
-        <ul id="recent-crashes"></ul>
-      </div>
-      <div>
-        <h2>Provably fair</h2>
-        <p>Hash: <code id="seed-hash">—</code></p>
-        <p id="seed-reveal"></p>
-      </div>
-    </section>
-  </main>
+      <div class="crash-layout">
+        <section class="card crash-board">
+          <div id="multiplier" class="multiplier num">1.00x</div>
+          <div id="phase-banner" class="phase-banner"></div>
+          <div class="bet-controls">
+            <div>
+              <label for="bet-amount">Bet (cents)</label>
+              <input type="number" id="bet-amount" min="100" value="1000">
+            </div>
+            <div>
+              <label for="auto-cashout">Auto cashout (×)</label>
+              <input type="number" id="auto-cashout" placeholder="optional" min="1.01" step="0.01">
+            </div>
+            <button id="bet-btn" class="btn-primary">Place bet</button>
+            <button id="cashout-btn" class="btn-gold" disabled>Cash out</button>
+          </div>
+          <p id="crash-message" class="message" role="status"></p>
 
+          <div class="crash-history">
+            <h2>Recent crashes</h2>
+            <ul id="recent-crashes" class="chip-row"></ul>
+          </div>
+        </section>
+
+        <section class="crash-side">
+          <div class="card side-panel">
+            <h2>Players this round</h2>
+            <ul id="player-list" class="row-list"></ul>
+          </div>
+          <div class="card side-panel">
+            <h2>Provably fair</h2>
+            <p class="fair-row">Hash <code id="seed-hash">—</code></p>
+            <p id="seed-reveal" class="fair-row"></p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="shell.js"></script>
   <script src="crash.js"></script>
 </body>
 </html>

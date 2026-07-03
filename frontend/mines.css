@@ -1,52 +1,53 @@
-.mines-main {
-  max-width: 600px;
-  margin: 1.5rem auto;
-  padding: 0 1.5rem;
+.mines-board {
+  max-width: 620px;
+  padding: var(--space-6);
   text-align: center;
 }
 
 .mines-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--space-3);
+  align-items: end;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
-.mines-controls input {
-  padding: 0.5rem;
-  border-radius: var(--radius);
-  border: 1px solid #33374470;
-  background: #10121850;
-  color: var(--text);
-  width: 120px;
+.mines-controls > div { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.mines-controls input { width: 110px; }
+
+.mines-multiplier {
+  font-size: 1.1rem;
+  color: var(--muted);
 }
+.mines-multiplier strong { color: var(--text); font-size: 1.4rem; }
 
 .mines-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.4rem;
-  margin-top: 1rem;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
 }
 
 .mines-tile {
   aspect-ratio: 1;
-  background: var(--surface);
-  border: 1px solid #33374470;
-  border-radius: var(--radius);
-  font-size: 1.2rem;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-sm);
+  font-size: 1.3rem;
   cursor: pointer;
   color: var(--text);
 }
 
-.mines-tile:disabled {
-  cursor: default;
-}
+.mines-tile:hover:not(:disabled) { border-color: var(--stroke-hover); }
+.mines-tile:disabled { cursor: default; }
 
 .mines-tile.safe {
-  background: #1f6f43;
+  background: rgba(52, 199, 123, 0.16);
+  border-color: var(--win);
 }
 
 .mines-tile.mine {
-  background: var(--danger);
+  background: rgba(229, 72, 77, 0.18);
+  border-color: var(--loss);
 }

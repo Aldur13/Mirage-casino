@@ -8,25 +8,46 @@
 <link rel="stylesheet" href="crates.css">
 </head>
 <body>
-  <header>
-    <h1>Crates</h1>
-    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/" class="brand">Mirage Casino</a>
+      <div class="balance-pill">
+        <div class="label">Balance</div>
+        <div class="value num" id="sidebar-balance">—</div>
+      </div>
+      <nav class="nav-links">
+        <a href="/crash.html">Crash</a>
+        <a href="/mines.html">Mines</a>
+        <a href="/blackjack.html">Blackjack</a>
+        <a href="/crates.html">Crates</a>
+        <a href="/leaderboards.html">Leaderboards</a>
+        <a href="/profile.html">Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span id="sidebar-name"></span>
+        <button class="btn-ghost" id="sidebar-logout">Log out</button>
+      </div>
+    </aside>
 
-  <main class="crates-main">
-    <section>
-      <h2>Available crates</h2>
-      <div id="crate-list" class="crate-grid"></div>
-    </section>
+    <main class="content">
+      <h1>Crates</h1>
+      <p class="eyebrow">Odds are exact — no "rare!", just the real percentage</p>
 
-    <p id="crates-message" role="status"></p>
+      <section>
+        <h2 class="section-title">Available crates</h2>
+        <div id="crate-list" class="crate-grid"></div>
+      </section>
 
-    <section>
-      <h2>Your inventory</h2>
-      <div id="inventory-list" class="crate-grid"></div>
-    </section>
-  </main>
+      <p id="crates-message" class="message" role="status"></p>
 
+      <section>
+        <h2 class="section-title">Your inventory</h2>
+        <div id="inventory-list" class="crate-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="shell.js"></script>
   <script src="crates.js"></script>
 </body>
 </html>
