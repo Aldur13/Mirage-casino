@@ -1,5 +1,3 @@
-const TOKEN_KEY = "mirage_casino_token";
-
 const els = {
   multiplier: document.getElementById("multiplier"),
   phaseBanner: document.getElementById("phase-banner"),
@@ -103,6 +101,7 @@ socket.addEventListener("message", (event) => {
 function prependCrash(crashPoint) {
   const li = document.createElement("li");
   li.textContent = `${crashPoint.toFixed(2)}x`;
+  li.className = crashPoint < 2 ? "low" : "high";
   els.recentCrashes.prepend(li);
   while (els.recentCrashes.children.length > 20) {
     els.recentCrashes.removeChild(els.recentCrashes.lastChild);

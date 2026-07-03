@@ -1,5 +1,3 @@
-const TOKEN_KEY = "mirage_casino_token";
-
 const els = {
   name: document.getElementById("profile-name"),
   statsGrid: document.getElementById("stats-grid"),
@@ -19,12 +17,12 @@ async function api(path) {
 function statCard(label, value) {
   const div = document.createElement("div");
   div.className = "stat-card";
-  div.innerHTML = `<div class="label">${label}</div><div class="value">${value}</div>`;
+  div.innerHTML = `<div class="label">${label}</div><div class="value num">${value}</div>`;
   return div;
 }
 
 function money(cents) {
-  return `${(cents / 100).toFixed(2)}`;
+  return `€${(cents / 100).toFixed(2)}`;
 }
 
 async function load() {
@@ -48,6 +46,7 @@ async function load() {
       ["Crates opened", s.crates_opened],
       ["Legendary items", s.legendary_items_obtained],
     ];
+    els.statsGrid.innerHTML = "";
     cards.forEach(([label, value]) => els.statsGrid.appendChild(statCard(label, value)));
   } catch (err) {
     els.name.textContent = "Log in to view your profile";
@@ -55,14 +54,19 @@ async function load() {
 
   try {
     const { achievements } = await api("/achievements/me");
+    els.achievementsList.innerHTML = "";
     achievements.forEach((a) => {
       const div = document.createElement("div");
-      div.className = "stat-card achievement-card" + (a.unlocked ? "" : " locked");
-      div.innerHTML = `<div class="label">${a.name}</div><div class="value">${a.unlocked ? "✅" : "🔒"}</div>`;
+      div.className = "achievement-card" + (a.unlocked ? " unlocked" : " locked");
+      div.innerHTML = `
+        <div class="ach-icon">${a.unlocked ? "🏆" : "🔒"}</div>
+        <div class="ach-name">${a.name}</div>
+        <div class="ach-desc">${a.description}</div>
+      `;
       els.achievementsList.appendChild(div);
     });
   } catch (err) {
-    // Achievements land in a later phase; ignore until then.
+    // Achievements endpoint requires auth; ignore if not logged in.
   }
 }
 

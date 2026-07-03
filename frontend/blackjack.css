@@ -1,47 +1,65 @@
-.bj-main {
-  max-width: 700px;
-  margin: 1.5rem auto;
-  padding: 0 1.5rem;
+.bj-board {
+  max-width: 720px;
+  padding: var(--space-6);
 }
 
 .bj-controls, .bj-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: var(--space-3);
+  align-items: end;
+  margin-bottom: var(--space-4);
 }
 
-.bj-controls input {
-  padding: 0.5rem;
-  border-radius: var(--radius);
-  border: 1px solid #33374470;
-  background: #10121850;
-  color: var(--text);
-  width: 140px;
+.bj-controls > div { display: flex; flex-direction: column; gap: 4px; }
+.bj-controls input { width: 140px; }
+
+.bj-section h2 {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--space-2);
 }
 
 .bj-hand {
   display: flex;
-  gap: 0.4rem;
-  min-height: 3rem;
-  margin-bottom: 0.75rem;
+  gap: var(--space-2);
+  min-height: 3.2rem;
+  margin-bottom: var(--space-4);
 }
 
 .bj-card {
-  background: var(--surface);
-  border: 1px solid #33374470;
-  border-radius: var(--radius);
-  padding: 0.5rem 0.7rem;
-  font-weight: 600;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.bj-hands {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .bj-hand-block {
-  border: 1px solid #33374470;
-  border-radius: var(--radius);
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
+  flex: 1 1 260px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--surface-1);
+}
+
+.bj-hand-block h3 {
+  margin: 0 0 var(--space-2);
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-transform: capitalize;
 }
 
 .bj-hand-block.active {
-  border-color: var(--accent);
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 4px rgba(124, 131, 255, 0.15);
 }

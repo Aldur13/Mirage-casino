@@ -1,5 +1,3 @@
-const TOKEN_KEY = "mirage_casino_token";
-
 const els = {
   betAmount: document.getElementById("bet-amount"),
   startBtn: document.getElementById("start-btn"),
@@ -78,7 +76,7 @@ function render(state) {
   els.startBtn.disabled = active || state.phase === "insurance_pending";
 
   if (state.phase === "settled") {
-    showMessage(`Round settled — total payout ${(state.total_payout_cents / 100).toFixed(2)}`);
+    showMessage(`Round settled — total payout €${(state.total_payout_cents / 100).toFixed(2)}`);
   } else {
     showMessage("");
   }

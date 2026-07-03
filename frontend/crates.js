@@ -1,5 +1,3 @@
-const TOKEN_KEY = "mirage_casino_token";
-
 const els = {
   crateList: document.getElementById("crate-list"),
   inventoryList: document.getElementById("inventory-list"),
@@ -20,21 +18,35 @@ async function api(path, options = {}) {
   return data;
 }
 
+function rarityBadge(rarity) {
+  return `<span class="badge badge-${rarity}">${rarity}</span>`;
+}
+
 async function loadCrates() {
   const { crates } = await api("/crates");
   els.crateList.innerHTML = "";
-  crates.forEach((crate) => {
+  for (const crate of crates) {
+    const detail = await api(`/crates/${crate.id}`);
     const card = document.createElement("div");
     card.className = "crate-card";
     card.innerHTML = `
       <div class="emoji">🎁</div>
-      <div>${crate.name}</div>
-      <div>${(crate.price_cents / 100).toFixed(2)}</div>
-      <button data-id="${crate.id}">Open</button>
+      <div><strong>${crate.name}</strong></div>
+      <div class="crate-desc">${crate.description}</div>
+      <div class="num">€${(crate.price_cents / 100).toFixed(2)}</div>
+      <div class="crate-odds">
+        ${detail.items.map((i) => `
+          <div class="crate-odds-row">
+            <span>${i.image_url} ${i.name} ${rarityBadge(i.rarity)}</span>
+            <span class="pct num">${i.drop_chance_pct}%</span>
+          </div>
+        `).join("")}
+      </div>
+      <button data-id="${crate.id}" class="btn-primary">Open</button>
     `;
     card.querySelector("button").addEventListener("click", () => openCrate(crate.id));
     els.crateList.appendChild(card);
-  });
+  }
 }
 
 async function openCrate(crateId) {
@@ -55,9 +67,10 @@ async function loadInventory() {
     card.className = `item-card rarity-${item.rarity}`;
     card.innerHTML = `
       <div class="emoji">${item.image_url}</div>
-      <div>${item.name}</div>
-      <div>Sell: ${(item.sell_value_cents / 100).toFixed(2)}</div>
-      <button data-id="${item.id}">Sell</button>
+      <div><strong>${item.name}</strong></div>
+      ${rarityBadge(item.rarity)}
+      <div class="item-sell-value num">Sell: €${(item.sell_value_cents / 100).toFixed(2)}</div>
+      <button data-id="${item.id}" class="btn-ghost">Sell</button>
     `;
     card.querySelector("button").addEventListener("click", () => sellItem(item.id));
     els.inventoryList.appendChild(card);
@@ -67,12 +80,12 @@ async function loadInventory() {
 async function sellItem(itemId) {
   try {
     const result = await api(`/crates/inventory/${itemId}/sell`, { method: "POST" });
-    showMessage(`Sold for ${(result.payout_cents / 100).toFixed(2)}`);
+    showMessage(`Sold for €${(result.payout_cents / 100).toFixed(2)}`);
     await loadInventory();
   } catch (err) {
     showMessage(err.message);
   }
 }
 
-loadCrates();
+loadCrates().catch((err) => showMessage(`Failed to load crates: ${err.message}`));
 loadInventory().catch(() => {});

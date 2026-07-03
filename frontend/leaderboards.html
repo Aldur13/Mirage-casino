@@ -5,30 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leaderboards — Mirage Casino</title>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="profile.css">
+<link rel="stylesheet" href="leaderboards.css">
 </head>
 <body>
-  <header>
-    <h1>Leaderboards</h1>
-    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/" class="brand">Mirage Casino</a>
+      <div class="balance-pill">
+        <div class="label">Balance</div>
+        <div class="value num" id="sidebar-balance">—</div>
+      </div>
+      <nav class="nav-links">
+        <a href="/crash.html">Crash</a>
+        <a href="/mines.html">Mines</a>
+        <a href="/blackjack.html">Blackjack</a>
+        <a href="/crates.html">Crates</a>
+        <a href="/leaderboards.html">Leaderboards</a>
+        <a href="/profile.html">Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span id="sidebar-name"></span>
+        <button class="btn-ghost" id="sidebar-logout">Log out</button>
+      </div>
+    </aside>
 
-  <main class="profile-main">
-    <select id="board-select">
-      <option value="richest">Richest Players</option>
-      <option value="biggest-win">Biggest Win</option>
-      <option value="most-profit">Most Profit</option>
-      <option value="most-wagered">Most Wagered</option>
-      <option value="most-games-played">Most Games Played</option>
-      <option value="biggest-crash-cashout">Biggest Crash Cashout</option>
-      <option value="most-legendary-items">Most Legendary Items</option>
-      <option value="daily-winners">Daily Winners</option>
-      <option value="weekly-winners">Weekly Winners</option>
-      <option value="monthly-winners">Monthly Winners</option>
-    </select>
-    <ol id="board-list"></ol>
-  </main>
+    <main class="content">
+      <h1>Leaderboards</h1>
+      <p class="eyebrow">Rankings across every game</p>
 
+      <select id="board-select">
+        <option value="richest">Richest Players</option>
+        <option value="biggest-win">Biggest Win</option>
+        <option value="most-profit">Most Profit</option>
+        <option value="most-wagered">Most Wagered</option>
+        <option value="most-games-played">Most Games Played</option>
+        <option value="biggest-crash-cashout">Biggest Crash Cashout</option>
+        <option value="most-legendary-items">Most Legendary Items</option>
+        <option value="daily-winners">Daily Winners</option>
+        <option value="weekly-winners">Weekly Winners</option>
+        <option value="monthly-winners">Monthly Winners</option>
+      </select>
+
+      <div class="card board-card">
+        <ol id="board-list" class="board-list"></ol>
+      </div>
+    </main>
+  </div>
+
+  <script src="shell.js"></script>
   <script src="leaderboards.js"></script>
 </body>
 </html>

@@ -1,0 +1,46 @@
+#board-select {
+  margin: 0 0 var(--space-4);
+  width: 260px;
+}
+
+.board-card {
+  max-width: 640px;
+  padding: var(--space-4) var(--space-5);
+}
+
+.board-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.board-list li:last-child { border-bottom: none; }
+
+.board-rank {
+  width: 1.6rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.board-name { flex: 1; }
+
+.board-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.board-extra {
+  color: var(--muted);
+  font-size: 0.8rem;
+}

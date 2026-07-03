@@ -1,46 +1,59 @@
-.crates-main {
-  max-width: 800px;
-  margin: 1.5rem auto;
-  padding: 0 1.5rem;
+.section-title {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: var(--space-5) 0 var(--space-3);
 }
 
 .crate-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
 }
 
 .crate-card, .item-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 0.75rem;
+  padding: var(--space-4);
   text-align: center;
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  border: 1px solid var(--stroke);
 }
 
-.item-card.rarity-common { border: 1px solid #6b6b6b; }
-.item-card.rarity-uncommon { border: 1px solid #3fa34d; }
-.item-card.rarity-rare { border: 1px solid #3a7bd5; }
-.item-card.rarity-epic { border: 1px solid #9b4dca; }
-.item-card.rarity-legendary { border: 1px solid var(--accent); }
+.item-card.rarity-common { border-color: var(--rarity-common); }
+.item-card.rarity-uncommon { border-color: var(--rarity-uncommon); }
+.item-card.rarity-rare { border-color: var(--rarity-rare); }
+.item-card.rarity-epic { border-color: var(--rarity-epic); }
+.item-card.rarity-legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 24px -8px rgba(212, 175, 55, 0.5); }
 
-.crate-card .emoji, .item-card .emoji {
-  font-size: 2rem;
+.crate-card .emoji, .item-card .emoji { font-size: 2.2rem; }
+
+.crate-card .crate-desc {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: var(--space-1) 0 var(--space-2);
 }
 
 .crate-card button, .item-card button {
-  margin-top: 0.5rem;
+  margin-top: var(--space-3);
   width: 100%;
-  padding: 0.4rem;
-  border: none;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: #14161c;
-  font-weight: 600;
-  cursor: pointer;
 }
 
-.item-card button:disabled {
-  opacity: 0.5;
-  cursor: default;
+.crate-odds {
+  margin-top: var(--space-3);
+  text-align: left;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
+
+.crate-odds-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.crate-odds-row .pct { font-variant-numeric: tabular-nums; color: var(--muted); }
+
+.item-sell-value { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }

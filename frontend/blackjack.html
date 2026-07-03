@@ -8,36 +8,62 @@
 <link rel="stylesheet" href="blackjack.css">
 </head>
 <body>
-  <header>
-    <h1>Blackjack</h1>
-    <p class="subtitle"><a href="/">&larr; Mirage Casino</a></p>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/" class="brand">Mirage Casino</a>
+      <div class="balance-pill">
+        <div class="label">Balance</div>
+        <div class="value num" id="sidebar-balance">—</div>
+      </div>
+      <nav class="nav-links">
+        <a href="/crash.html">Crash</a>
+        <a href="/mines.html">Mines</a>
+        <a href="/blackjack.html">Blackjack</a>
+        <a href="/crates.html">Crates</a>
+        <a href="/leaderboards.html">Leaderboards</a>
+        <a href="/profile.html">Profile</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span id="sidebar-name"></span>
+        <button class="btn-ghost" id="sidebar-logout">Log out</button>
+      </div>
+    </aside>
 
-  <main class="bj-main">
-    <div class="bj-controls">
-      <input type="number" id="bet-amount" placeholder="Bet (cents)" min="100" value="1000">
-      <button id="start-btn">Deal</button>
-    </div>
+    <main class="content">
+      <h1>Blackjack</h1>
+      <p class="eyebrow">Dealer stands on all 17s</p>
 
-    <section>
-      <h2>Dealer</h2>
-      <div id="dealer-hand" class="bj-hand"></div>
-    </section>
+      <div class="card bj-board">
+        <div class="bj-controls">
+          <div>
+            <label for="bet-amount">Bet (cents)</label>
+            <input type="number" id="bet-amount" min="100" value="1000">
+          </div>
+          <button id="start-btn" class="btn-primary">Deal</button>
+        </div>
 
-    <section id="hands-container"></section>
+        <section class="bj-section">
+          <h2>Dealer</h2>
+          <div id="dealer-hand" class="bj-hand"></div>
+        </section>
 
-    <div class="bj-actions">
-      <button id="hit-btn" disabled>Hit</button>
-      <button id="stand-btn" disabled>Stand</button>
-      <button id="double-btn" disabled>Double</button>
-      <button id="split-btn" disabled>Split</button>
-      <button id="insure-yes-btn" disabled>Buy insurance</button>
-      <button id="insure-no-btn" disabled>Decline insurance</button>
-    </div>
+        <section id="hands-container" class="bj-hands"></section>
 
-    <p id="bj-message" role="status"></p>
-  </main>
+        <div class="bj-actions">
+          <button id="hit-btn" disabled>Hit</button>
+          <button id="stand-btn" disabled>Stand</button>
+          <button id="double-btn" disabled>Double</button>
+          <button id="split-btn" disabled>Split</button>
+          <button id="insure-yes-btn" class="btn-gold" disabled>Buy insurance</button>
+          <button id="insure-no-btn" class="btn-ghost" disabled>Decline insurance</button>
+        </div>
 
+        <p id="bj-message" class="message" role="status"></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="shell.js"></script>
   <script src="blackjack.js"></script>
 </body>
 </html>
