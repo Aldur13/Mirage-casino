@@ -20,6 +20,13 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60
 
+    # The single super-owner account, mirroring mirage-bank's pattern (see
+    # mirage-bank/backend/config.py + dependencies.py::get_current_owner).
+    # Only the admin whose email matches this may perform privileged
+    # mutations once the casino has its own admin routes; every other admin
+    # stays read-only. Fails closed when empty.
+    owner_email: str = ""
+
     cors_origins: str = (
         "http://localhost:8914,"
         "http://127.0.0.1:8914,"
