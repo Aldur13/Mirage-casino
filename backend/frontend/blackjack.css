@@ -61,7 +61,7 @@
 
 .bj-hand-block.active {
   border-color: var(--indigo);
-  box-shadow: 0 0 0 4px rgba(124, 131, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(58, 160, 230, 0.18);
 }
 
 .hand-value {
