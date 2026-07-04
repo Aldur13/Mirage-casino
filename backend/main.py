@@ -11,7 +11,7 @@ from games.crash.round_manager import round_manager
 from games.crates.repository import seed_default_crates
 from routes import (
     account_dev_router, account_router, achievements_router, auth_router, blackjack_router,
-    crash_router, crates_router, leaderboards_router, mines_router, statistics_router,
+    chicken_router, crash_router, crates_router, leaderboards_router, mines_router, statistics_router,
 )
 
 
@@ -52,6 +52,7 @@ app.include_router(crash_router)
 app.include_router(mines_router)
 app.include_router(blackjack_router)
 app.include_router(crates_router)
+app.include_router(chicken_router)
 app.include_router(statistics_router)
 app.include_router(leaderboards_router)
 app.include_router(achievements_router)

@@ -1,0 +1,100 @@
+.chicken-board {
+  max-width: 760px;
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.chicken-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: end;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.chicken-controls > div { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.chicken-controls input { width: 110px; }
+
+.difficulty-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--stroke);
+  background: var(--surface-1);
+}
+
+.qty-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 2px;
+}
+
+.qty-btn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+  background: transparent;
+  border: 1px solid var(--stroke);
+}
+
+.qty-btn.active {
+  background: var(--grad-brand);
+  color: #fff;
+  border-color: transparent;
+}
+
+.chicken-multiplier {
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+.chicken-multiplier strong { color: var(--text); font-size: 1.4rem; }
+#next-multiplier-wrap strong { font-size: 1rem; color: var(--muted); }
+
+.chicken-road {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-4);
+  justify-content: center;
+}
+
+.chicken-lane {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  background: var(--surface-2);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-sm);
+}
+
+.chicken-lane.crossed {
+  background: rgba(52, 199, 123, 0.16);
+  border-color: var(--win);
+}
+
+.chicken-lane.current {
+  background: rgba(124, 131, 255, 0.18);
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 2px rgba(124, 131, 255, 0.25);
+}
+
+.chicken-lane.hit,
+.chicken-lane.car {
+  background: rgba(229, 72, 77, 0.18);
+  border-color: var(--loss);
+}
+
+.chicken-lane.clear {
+  background: var(--surface-1);
+}
+
+@media (max-width: 600px) {
+  .chicken-lane { width: 34px; height: 34px; font-size: 1rem; }
+}

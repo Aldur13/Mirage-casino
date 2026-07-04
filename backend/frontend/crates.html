@@ -16,14 +16,15 @@
         <div class="value num" id="sidebar-balance">—</div>
       </div>
       <nav class="nav-links">
-        <a href="/crash.html">Crash</a>
-        <a href="/mines.html">Mines</a>
-        <a href="/blackjack.html">Blackjack</a>
-        <a href="/crates.html">Crates</a>
-        <a href="/leaderboards.html">Leaderboards</a>
-        <a href="/profile.html">Profile</a>
+        <a href="/crash.html" class="nav-link"><span class="nav-icon">🚀</span>Crash</a>
+        <a href="/mines.html" class="nav-link"><span class="nav-icon">💣</span>Mines</a>
+        <a href="/blackjack.html" class="nav-link"><span class="nav-icon">🃏</span>Blackjack</a>
+        <a href="/crates.html" class="nav-link"><span class="nav-icon">🎁</span>Crates</a>
+        <a href="/chicken.html" class="nav-link"><span class="nav-icon">🐔</span>Chicken Road</a>
       </nav>
       <div class="sidebar-footer">
+        <a href="/leaderboards.html" class="nav-link footer-link">Leaderboards</a>
+        <a href="/profile.html" class="nav-link footer-link">Profile</a>
         <span id="sidebar-name"></span>
         <button class="btn-ghost" id="sidebar-logout">Log out</button>
       </div>
@@ -33,10 +34,20 @@
       <h1>Crates</h1>
       <p class="eyebrow">Odds are exact — no "rare!", just the real percentage</p>
 
-      <label class="auto-sell-toggle">
-        <input type="checkbox" id="auto-sell-checkbox">
-        Auto-sell items the instant I open them
-      </label>
+      <div class="crates-controls">
+        <label class="auto-sell-toggle">
+          <input type="checkbox" id="auto-sell-checkbox">
+          Auto-sell items the instant I open them
+        </label>
+
+        <div class="qty-selector" id="qty-selector" role="group" aria-label="Open quantity">
+          <span class="qty-label">Open</span>
+          <button type="button" class="qty-btn active" data-qty="1">1x</button>
+          <button type="button" class="qty-btn" data-qty="10">10x</button>
+          <button type="button" class="qty-btn" data-qty="25">25x</button>
+          <button type="button" class="qty-btn" data-qty="50">50x</button>
+        </div>
+      </div>
 
       <section>
         <h2 class="section-title">Available crates</h2>
@@ -57,6 +68,10 @@
       <div class="spin-viewport" id="spin-viewport">
         <div class="spin-pointer"></div>
         <div class="spin-track" id="spin-track"></div>
+      </div>
+      <div class="spin-batch-info" id="spin-batch-info" hidden>
+        <span id="spin-batch-progress" class="num"></span>
+        <button type="button" class="btn-danger" id="spin-batch-stop">Stop</button>
       </div>
       <div class="spin-result" id="spin-result" hidden>
         <div class="spin-result-name" id="spin-result-name"></div>
