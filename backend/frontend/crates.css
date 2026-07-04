@@ -24,7 +24,7 @@
 .item-card.rarity-uncommon { border-color: var(--rarity-uncommon); }
 .item-card.rarity-rare { border-color: var(--rarity-rare); }
 .item-card.rarity-epic { border-color: var(--rarity-epic); }
-.item-card.rarity-legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 24px -8px rgba(212, 175, 55, 0.5); }
+.item-card.rarity-legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 24px -8px rgba(252, 163, 17, 0.5); }
 
 .crate-card .emoji, .item-card .emoji { font-size: 2.2rem; }
 
@@ -125,7 +125,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  background: rgba(3, 5, 20, 0.78);
+  background: rgba(1, 14, 24, 0.82);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -161,7 +161,7 @@
   width: 2px;
   transform: translateX(-50%);
   background: var(--gold);
-  box-shadow: 0 0 12px 2px rgba(212, 175, 55, 0.7);
+  box-shadow: 0 0 12px 2px rgba(252, 163, 17, 0.7);
   z-index: 2;
 }
 

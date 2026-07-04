@@ -34,6 +34,7 @@
   background: var(--surface-2);
   border: 1px solid var(--stroke);
   border-radius: var(--radius-sm);
+  clip-path: none;
   font-size: 1.3rem;
   cursor: pointer;
   color: var(--text);
@@ -43,11 +44,11 @@
 .mines-tile:disabled { cursor: default; }
 
 .mines-tile.safe {
-  background: rgba(52, 199, 123, 0.16);
+  background: rgba(1, 224, 163, 0.16);
   border-color: var(--win);
 }
 
 .mines-tile.mine {
-  background: rgba(229, 72, 77, 0.18);
+  background: rgba(245, 80, 70, 0.18);
   border-color: var(--loss);
 }

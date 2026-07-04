@@ -75,19 +75,19 @@
 }
 
 .chicken-lane.crossed {
-  background: rgba(52, 199, 123, 0.16);
+  background: rgba(1, 224, 163, 0.16);
   border-color: var(--win);
 }
 
 .chicken-lane.current {
-  background: rgba(124, 131, 255, 0.18);
+  background: rgba(58, 160, 230, 0.18);
   border-color: var(--indigo);
-  box-shadow: 0 0 0 2px rgba(124, 131, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(58, 160, 230, 0.25);
 }
 
 .chicken-lane.hit,
 .chicken-lane.car {
-  background: rgba(229, 72, 77, 0.18);
+  background: rgba(245, 80, 70, 0.18);
   border-color: var(--loss);
 }
 

@@ -49,7 +49,7 @@
 
 .achievement-card.unlocked {
   border-color: var(--gold);
-  box-shadow: 0 0 20px -8px rgba(212, 175, 55, 0.45);
+  box-shadow: 0 0 20px -8px rgba(252, 163, 17, 0.45);
 }
 
 .achievement-card.locked {
