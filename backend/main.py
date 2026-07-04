@@ -3,7 +3,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from config import settings
 from database import close_driver, setup_constraints
@@ -34,7 +34,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[o.strip() for o in settings.cors_origins.split(",") if o.strip()],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -66,14 +66,19 @@ frontend_dir = Path(__file__).parent / "frontend"
 @app.get("/{full_path:path}", include_in_schema=False)
 async def serve_frontend(full_path: str):
     if not frontend_dir.exists():
-        return {"error": "Frontend not found"}, 404
+        return JSONResponse({"error": "Frontend not found"}, status_code=404)
 
-    file_path = frontend_dir / full_path
-    if file_path.is_file() and file_path.is_relative_to(frontend_dir):
+    # Resolve before the containment check: is_relative_to() is purely
+    # lexical and does not collapse "..", so an unresolved path could
+    # escape the frontend dir. Resolving first blocks path traversal.
+    base = frontend_dir.resolve()
+    file_path = (base / full_path).resolve()
+
+    if file_path.is_file() and file_path.is_relative_to(base):
         return FileResponse(file_path)
 
-    index_path = frontend_dir / "index.html"
-    if index_path.exists():
+    index_path = base / "index.html"
+    if index_path.is_file():
         return FileResponse(index_path)
 
-    return {"error": "Not found"}, 404
+    return JSONResponse({"error": "Not found"}, status_code=404)

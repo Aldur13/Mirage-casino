@@ -13,6 +13,22 @@ from games.crash.schemas import (
 router = APIRouter(prefix="/games/crash", tags=["Crash"])
 
 
+def _parse_auto_cashout(raw) -> float | None:
+    """Validate the client-supplied auto-cashout target before it reaches
+    the shared round loop. An unvalidated string/negative here would raise
+    mid-tick inside _resolve_auto_cashouts and restart the round for every
+    connected player, so reject it as a per-client error instead."""
+    if raw is None:
+        return None
+    try:
+        value = float(raw)
+    except (TypeError, ValueError):
+        raise ValueError("auto_cashout_multiplier must be a number")
+    if value <= 1.0:
+        raise ValueError("auto_cashout_multiplier must be greater than 1.0")
+    return value
+
+
 @router.get("/state", response_model=CrashStateResponse)
 def get_state():
     """Snapshot of the current round — lets a page render something
@@ -69,11 +85,15 @@ async def crash_ws(websocket: WebSocket, token: str | None = Query(default=None)
                     await websocket.send_json({"type": "error", "message": "Log in to place a bet"})
                     continue
                 try:
+                    amount_cents = int(message.get("amount_cents", 0))
+                    auto_cashout_multiplier = _parse_auto_cashout(
+                        message.get("auto_cashout_multiplier")
+                    )
                     await round_manager.place_bet(
                         user_id=user["id"],
                         display_name=user["name"],
-                        amount_cents=int(message.get("amount_cents", 0)),
-                        auto_cashout_multiplier=message.get("auto_cashout_multiplier"),
+                        amount_cents=amount_cents,
+                        auto_cashout_multiplier=auto_cashout_multiplier,
                     )
                 except (BetRejectedError, TypeError, ValueError) as exc:
                     await websocket.send_json({"type": "error", "message": str(exc)})

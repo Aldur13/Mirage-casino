@@ -19,6 +19,10 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(plain: str, hashed: str) -> bool:
+    # bcrypt silently truncates at 72 bytes; reject over-length input here so
+    # a >72-byte password can't be "verified" by matching a truncated prefix.
+    if len(plain.encode("utf-8")) > 72:
+        return False
     return pwd_context.verify(plain, hashed)
 
 
@@ -31,9 +35,7 @@ def create_token(user_id: str) -> str:
 
 def decode_token(token: str) -> str:
     payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
-    token_type = payload.get("type")
-    # Accept None for legacy tokens created before the type claim was added.
-    if token_type not in ("access", None):
+    if payload.get("type") != "access":
         raise jwt.InvalidTokenError("Not an access token")
     user_id: str = payload.get("sub")
     if user_id is None:

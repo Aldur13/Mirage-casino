@@ -212,6 +212,8 @@ class RoundManager:
             raise BetRejectedError("Betting is closed for this round")
         if amount_cents < MIN_BET_CENTS:
             raise BetRejectedError(f"Minimum bet is {MIN_BET_CENTS} cents")
+        if auto_cashout_multiplier is not None and auto_cashout_multiplier <= 1.0:
+            raise BetRejectedError("Auto-cashout multiplier must be greater than 1.0")
         if user_id in self.bets:
             raise BetRejectedError("You already placed a bet this round")
 
