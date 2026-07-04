@@ -94,23 +94,14 @@ def settle_payout(user_id: str, amount_cents: int, game: str, round_id: str) -> 
     now = datetime.now(timezone.utc).isoformat()
     description = f"{game.title()} payout"
 
-    def _reserve_tx(tx):
-        # CREATE (not MERGE) so the unique constraint on WagerTransaction.id
-        # raises ConstraintError on a duplicate call instead of silently
-        # matching the existing node — that's the idempotency guard.
-        tx.run(
-            """
-            CREATE (t:WagerTransaction:Transaction {
-                id: $tx_id, type: 'payout', kind: 'payout', game: $game, round_id: $round_id,
-                amount_cents: $amount_cents, timestamp: $now, status: 'completed',
-                description: $description
-            })
-            """,
-            tx_id=tx_id, game=game, round_id=round_id, amount_cents=amount_cents,
-            now=now, description=description,
-        )
-
-    def _credit_and_link(tx):
+    def _credit(tx):
+        # The ledger node and the balance change are created in one Cypher
+        # statement, i.e. one transaction: they commit together or not at
+        # all. CREATE (not MERGE) means a duplicate payout for this
+        # (game, round_id, user) hits the WagerTransaction.id unique
+        # constraint and rolls the whole thing back — that's the
+        # idempotency guard, with no window where the reservation node
+        # exists but the credit never landed.
         result = tx.run(
             """
             MATCH (u:User {id: $user_id})
@@ -119,7 +110,11 @@ def settle_payout(user_id: str, amount_cents: int, game: str, round_id: str) -> 
             WITH coalesce(a1, a2) AS a
             WHERE a IS NOT NULL
             MATCH (treasury:Account {id: $treasury_id})
-            MATCH (t:WagerTransaction {id: $tx_id})
+            CREATE (t:WagerTransaction:Transaction {
+                id: $tx_id, type: 'payout', kind: 'payout', game: $game, round_id: $round_id,
+                amount_cents: $amount_cents, timestamp: $now, status: 'completed',
+                description: $description
+            })
             SET a.balance_cents = a.balance_cents + $amount_cents,
                 treasury.balance_cents = treasury.balance_cents - $amount_cents
             CREATE (treasury)-[:SENT]->(t)
@@ -127,7 +122,8 @@ def settle_payout(user_id: str, amount_cents: int, game: str, round_id: str) -> 
             RETURN a.balance_cents AS new_balance, a.currency AS currency
             """,
             user_id=user_id, treasury_id=TREASURY_ACCOUNT_ID,
-            amount_cents=amount_cents, tx_id=tx_id,
+            amount_cents=amount_cents, tx_id=tx_id, game=game, round_id=round_id,
+            now=now, description=description,
         ).single()
         if result is None:
             raise InsufficientFundsError("Payout target account not found")
@@ -149,11 +145,9 @@ def settle_payout(user_id: str, amount_cents: int, game: str, round_id: str) -> 
 
     with get_session() as session:
         try:
-            session.execute_write(_reserve_tx)
+            new_balance, currency = session.execute_write(_credit)
         except ConstraintError:
             balance, currency = session.execute_read(_current_balance)
             return tx_id, balance, currency, True
-
-        new_balance, currency = session.execute_write(_credit_and_link)
 
     return tx_id, new_balance, currency, False
