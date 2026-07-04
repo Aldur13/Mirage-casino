@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mines — Mirage Casino</title>
+<title>Chicken Road — Mirage Casino</title>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="mines.css">
+<link rel="stylesheet" href="chicken.css">
 </head>
 <body>
   <div class="app-shell">
@@ -31,31 +31,38 @@
     </aside>
 
     <main class="content">
-      <h1>Mines</h1>
-      <p class="eyebrow">Reveal safe tiles, cash out any time</p>
+      <h1>Chicken Road</h1>
+      <p class="eyebrow">Cross as many lanes as you dare, cash out any time</p>
 
-      <div class="card mines-board">
-        <div class="mines-controls">
+      <div class="card chicken-board">
+        <div class="chicken-controls">
           <div>
             <label for="bet-amount">Bet (€)</label>
             <input type="number" id="bet-amount" min="1" step="0.01" value="10.00">
           </div>
-          <div>
-            <label for="mine-count">Mines</label>
-            <input type="number" id="mine-count" min="1" max="24" value="3">
+          <div class="difficulty-selector" id="difficulty-selector" role="group" aria-label="Difficulty">
+            <span class="qty-label">Difficulty</span>
+            <button type="button" class="qty-btn" data-difficulty="easy">Easy</button>
+            <button type="button" class="qty-btn active" data-difficulty="medium">Medium</button>
+            <button type="button" class="qty-btn" data-difficulty="hard">Hard</button>
+            <button type="button" class="qty-btn" data-difficulty="daredevil">Daredevil</button>
           </div>
           <button id="start-btn" class="btn-primary">Start round</button>
+          <button id="cross-btn" class="btn-primary" disabled>Cross</button>
           <button id="cashout-btn" class="btn-gold" disabled>Cash out</button>
         </div>
 
-        <p class="mines-multiplier">Multiplier <strong id="multiplier" class="num">1.00x</strong></p>
-        <p id="mines-message" class="message" role="status"></p>
-        <div id="grid" class="mines-grid"></div>
+        <p class="chicken-multiplier">
+          Multiplier <strong id="multiplier" class="num">1.00x</strong>
+          <span id="next-multiplier-wrap" hidden>· next lane <strong id="next-multiplier" class="num">—</strong></span>
+        </p>
+        <p id="chicken-message" class="message" role="status"></p>
+        <div id="road" class="chicken-road"></div>
       </div>
     </main>
   </div>
 
   <script src="shell.js"></script>
-  <script src="mines.js"></script>
+  <script src="chicken.js"></script>
 </body>
 </html>

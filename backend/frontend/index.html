@@ -10,12 +10,76 @@
 <body>
   <main class="auth-hero">
     <div class="auth-wrap">
-      <div class="brand auth-brand">Mirage Casino</div>
-      <p class="auth-tagline">Provably fair. Every round.</p>
 
-      <section id="auth-forms" class="auth-forms">
-        <form id="login-form" class="card auth-card">
-          <h2>Log in</h2>
+      <section id="landing" class="landing">
+        <div class="brand auth-brand">Mirage Casino</div>
+        <p class="auth-tagline">Provably fair. Every round.</p>
+        <p class="landing-intro">
+          Every wager and payout runs through one audited ledger — no hidden
+          balances, no rigged reels. Crash publishes a cryptographic commitment
+          before each round starts and reveals the seed after it crashes, so
+          anyone can recompute the result themselves. Every other game rolls
+          on Python's <code>secrets</code> CSPRNG, server-side, before you ever
+          see an outcome.
+        </p>
+
+        <div class="fairness-grid">
+          <div class="fairness-card card">
+            <div class="fairness-step">1. Commit</div>
+            <p>Before betting closes, the server publishes
+              <code>sha256(server_seed)</code> — a one-way hash that reveals
+              nothing about the outcome, but locks it in.</p>
+          </div>
+          <div class="fairness-card card">
+            <div class="fairness-step">2. Play</div>
+            <p>The round runs. The multiplier climbs until it crashes at a
+              point already fixed by the hidden seed from step one.</p>
+          </div>
+          <div class="fairness-card card">
+            <div class="fairness-step">3. Reveal &amp; verify</div>
+            <p>The seed is published. Recompute the hash and the crash point
+              yourself — <a href="/crash.html">every past round</a> is checkable,
+              forever.</p>
+          </div>
+        </div>
+
+        <h2 class="section-title landing-heading">Games</h2>
+        <div class="game-lobby-grid">
+          <div class="game-tile game-tile-preview">
+            <div class="game-tile-icon">🚀</div>
+            <div class="game-tile-name">Crash</div>
+            <div class="game-tile-desc">Cash out before it pops</div>
+          </div>
+          <div class="game-tile game-tile-preview">
+            <div class="game-tile-icon">💣</div>
+            <div class="game-tile-name">Mines</div>
+            <div class="game-tile-desc">Reveal tiles, dodge the mines</div>
+          </div>
+          <div class="game-tile game-tile-preview">
+            <div class="game-tile-icon">🃏</div>
+            <div class="game-tile-name">Blackjack</div>
+            <div class="game-tile-desc">Beat the dealer to 21</div>
+          </div>
+          <div class="game-tile game-tile-preview">
+            <div class="game-tile-icon">🎁</div>
+            <div class="game-tile-name">Crates</div>
+            <div class="game-tile-desc">Open crates, win items</div>
+          </div>
+          <div class="game-tile game-tile-preview">
+            <div class="game-tile-icon">🐔</div>
+            <div class="game-tile-name">Chicken Road</div>
+            <div class="game-tile-desc">Cross lanes, don't get clipped</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="auth-section" class="auth-section card">
+        <div class="auth-tabs" role="tablist">
+          <button type="button" class="auth-tab active" id="tab-login" role="tab" aria-selected="true">Log in</button>
+          <button type="button" class="auth-tab" id="tab-register" role="tab" aria-selected="false">Create account</button>
+        </div>
+
+        <form id="login-form" class="auth-panel">
           <label for="login-email">Email</label>
           <input type="email" id="login-email" name="email" placeholder="you@example.com" required>
           <label for="login-password">Password</label>
@@ -23,8 +87,7 @@
           <button type="submit" class="btn-primary">Log in</button>
         </form>
 
-        <form id="register-form" class="card auth-card">
-          <h2>Create account</h2>
+        <form id="register-form" class="auth-panel" hidden>
           <label for="register-name">Full name</label>
           <input type="text" id="register-name" name="name" placeholder="Full name" required>
           <label for="register-email">Email</label>
@@ -61,6 +124,11 @@
             <div class="game-tile-icon">🎁</div>
             <div class="game-tile-name">Crates</div>
             <div class="game-tile-desc">Open crates, win items</div>
+          </a>
+          <a class="game-tile" href="/chicken.html">
+            <div class="game-tile-icon">🐔</div>
+            <div class="game-tile-name">Chicken Road</div>
+            <div class="game-tile-desc">Cross lanes, don't get clipped</div>
           </a>
         </div>
 

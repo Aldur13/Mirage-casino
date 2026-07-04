@@ -4,7 +4,10 @@
 const TOKEN_KEY = "mirage_casino_token";
 
 const els = {
-  authForms: document.getElementById("auth-forms"),
+  landing: document.getElementById("landing"),
+  authSection: document.getElementById("auth-section"),
+  tabLogin: document.getElementById("tab-login"),
+  tabRegister: document.getElementById("tab-register"),
   loginForm: document.getElementById("login-form"),
   registerForm: document.getElementById("register-form"),
   dashboard: document.getElementById("dashboard"),
@@ -13,6 +16,19 @@ const els = {
   logoutBtn: document.getElementById("logout-btn"),
   message: document.getElementById("message"),
 };
+
+function showTab(name) {
+  const loginActive = name === "login";
+  els.tabLogin.classList.toggle("active", loginActive);
+  els.tabRegister.classList.toggle("active", !loginActive);
+  els.tabLogin.setAttribute("aria-selected", String(loginActive));
+  els.tabRegister.setAttribute("aria-selected", String(!loginActive));
+  els.loginForm.hidden = !loginActive;
+  els.registerForm.hidden = loginActive;
+}
+
+els.tabLogin.addEventListener("click", () => showTab("login"));
+els.tabRegister.addEventListener("click", () => showTab("register"));
 
 function showMessage(text, isError = true) {
   els.message.textContent = text;
@@ -52,7 +68,8 @@ async function loadDashboard() {
   const [me, balance] = await Promise.all([api("/me"), api("/balance")]);
   els.userName.textContent = me.name;
   els.balance.textContent = formatBalance(balance.balance_cents, balance.currency);
-  els.authForms.hidden = true;
+  els.landing.hidden = true;
+  els.authSection.hidden = true;
   els.dashboard.hidden = false;
 }
 
@@ -100,7 +117,9 @@ els.registerForm.addEventListener("submit", async (e) => {
 els.logoutBtn.addEventListener("click", () => {
   clearToken();
   els.dashboard.hidden = true;
-  els.authForms.hidden = false;
+  els.landing.hidden = false;
+  els.authSection.hidden = false;
+  showTab("login");
 });
 
 if (getToken()) {
