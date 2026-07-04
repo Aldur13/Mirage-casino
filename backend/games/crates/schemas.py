@@ -49,9 +49,15 @@ class InventoryResponse(BaseModel):
     items: list[InventoryItemView]
 
 
+class OpenCrateRequest(BaseModel):
+    auto_sell: bool = False
+
+
 class OpenCrateResponse(BaseModel):
     item: InventoryItemView
     new_balance_cents: int
+    sold: bool = False
+    payout_cents: Optional[int] = None
 
 
 class SellItemResponse(BaseModel):

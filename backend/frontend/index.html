@@ -35,19 +35,40 @@
         </form>
       </section>
 
-      <section id="dashboard" class="card auth-card" hidden>
+      <section id="dashboard" class="card auth-card lobby-card" hidden>
         <h2>Welcome, <span id="user-name"></span></h2>
         <p class="eyebrow">Balance</p>
         <p class="num" id="balance" style="font-size: 1.8rem; font-weight: 700;"></p>
-        <div class="auth-dashboard-links">
-          <a class="btn btn-primary" href="/crash.html">Play Crash</a>
-          <a class="btn btn-ghost" href="/mines.html">Mines</a>
-          <a class="btn btn-ghost" href="/blackjack.html">Blackjack</a>
-          <a class="btn btn-ghost" href="/crates.html">Crates</a>
-          <a class="btn btn-ghost" href="/leaderboards.html">Leaderboards</a>
-          <a class="btn btn-ghost" href="/profile.html">Profile</a>
+
+        <h3 class="section-title lobby-heading">Choose a game</h3>
+        <div class="game-lobby-grid">
+          <a class="game-tile" href="/crash.html">
+            <div class="game-tile-icon">🚀</div>
+            <div class="game-tile-name">Crash</div>
+            <div class="game-tile-desc">Cash out before it pops</div>
+          </a>
+          <a class="game-tile" href="/mines.html">
+            <div class="game-tile-icon">💣</div>
+            <div class="game-tile-name">Mines</div>
+            <div class="game-tile-desc">Reveal tiles, dodge the mines</div>
+          </a>
+          <a class="game-tile" href="/blackjack.html">
+            <div class="game-tile-icon">🃏</div>
+            <div class="game-tile-name">Blackjack</div>
+            <div class="game-tile-desc">Beat the dealer to 21</div>
+          </a>
+          <a class="game-tile" href="/crates.html">
+            <div class="game-tile-icon">🎁</div>
+            <div class="game-tile-name">Crates</div>
+            <div class="game-tile-desc">Open crates, win items</div>
+          </a>
         </div>
-        <button id="logout-btn" class="btn-ghost">Log out</button>
+
+        <div class="lobby-footer">
+          <a class="btn-ghost" href="/leaderboards.html">Leaderboards</a>
+          <a class="btn-ghost" href="/profile.html">Profile</a>
+          <button id="logout-btn" class="btn-ghost">Log out</button>
+        </div>
       </section>
 
       <p id="message" class="message" role="status"></p>

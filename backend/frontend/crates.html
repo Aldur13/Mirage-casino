@@ -33,6 +33,11 @@
       <h1>Crates</h1>
       <p class="eyebrow">Odds are exact — no "rare!", just the real percentage</p>
 
+      <label class="auto-sell-toggle">
+        <input type="checkbox" id="auto-sell-checkbox">
+        Auto-sell items the instant I open them
+      </label>
+
       <section>
         <h2 class="section-title">Available crates</h2>
         <div id="crate-list" class="crate-grid"></div>
@@ -45,6 +50,20 @@
         <div id="inventory-list" class="crate-grid"></div>
       </section>
     </main>
+  </div>
+
+  <div id="spin-overlay" class="spin-overlay" hidden>
+    <div class="spin-modal card">
+      <div class="spin-viewport" id="spin-viewport">
+        <div class="spin-pointer"></div>
+        <div class="spin-track" id="spin-track"></div>
+      </div>
+      <div class="spin-result" id="spin-result" hidden>
+        <div class="spin-result-name" id="spin-result-name"></div>
+        <div class="spin-result-value num" id="spin-result-value"></div>
+        <div class="spin-result-actions" id="spin-result-actions"></div>
+      </div>
+    </div>
   </div>
 
   <script src="shell.js"></script>
