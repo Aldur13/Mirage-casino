@@ -57,3 +57,146 @@
 .crate-odds-row .pct { font-variant-numeric: tabular-nums; color: var(--muted); }
 
 .item-sell-value { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+
+.auto-sell-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--stroke);
+  background: var(--surface-1);
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.auto-sell-toggle input { width: auto; cursor: pointer; }
+
+/* ── Crate-opening spin overlay ─────────────────────────────────── */
+
+.spin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: rgba(3, 5, 20, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.spin-modal {
+  width: 100%;
+  max-width: 720px;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.spin-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  border: 1px solid var(--stroke);
+  mask-image: linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+
+.spin-pointer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--gold);
+  box-shadow: 0 0 12px 2px rgba(212, 175, 55, 0.7);
+  z-index: 2;
+}
+
+.spin-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  will-change: transform;
+}
+
+.spin-cell {
+  flex: 0 0 140px;
+  width: 140px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-right: 1px solid var(--stroke);
+  background: var(--surface-1);
+  text-align: center;
+  padding: 0 var(--space-2);
+}
+
+.spin-cell.rarity-common { box-shadow: inset 0 -3px 0 var(--rarity-common); }
+.spin-cell.rarity-uncommon { box-shadow: inset 0 -3px 0 var(--rarity-uncommon); }
+.spin-cell.rarity-rare { box-shadow: inset 0 -3px 0 var(--rarity-rare); }
+.spin-cell.rarity-epic { box-shadow: inset 0 -3px 0 var(--rarity-epic); }
+.spin-cell.rarity-legendary { box-shadow: inset 0 -3px 0 var(--rarity-legendary); }
+
+.spin-cell .emoji { font-size: 2rem; }
+
+.spin-cell-name {
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.spin-result {
+  text-align: center;
+  animation: spin-result-reveal 0.35s ease-out;
+}
+
+.spin-result-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.spin-result-value {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.spin-result-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+
+@keyframes spin-result-reveal {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .spin-viewport { max-width: 100%; }
+}

@@ -8,7 +8,8 @@ from dependencies import get_current_user
 from games.crates import game, repository
 from games.crates.schemas import (
     CrateDetailResponse, CrateItemView, CrateListResponse, CrateSummary,
-    InventoryItemView, InventoryResponse, OpenCrateResponse, SellItemResponse,
+    InventoryItemView, InventoryResponse, OpenCrateRequest, OpenCrateResponse,
+    SellItemResponse,
 )
 
 router = APIRouter(prefix="/crates", tags=["Crates"])
@@ -45,7 +46,11 @@ def get_crate(crate_id: str):
 
 
 @router.post("/{crate_id}/open", response_model=OpenCrateResponse)
-def open_crate(crate_id: str, current_user: dict = Depends(get_current_user)):
+def open_crate(
+    crate_id: str,
+    body: OpenCrateRequest = OpenCrateRequest(),
+    current_user: dict = Depends(get_current_user),
+):
     crate = repository.get_crate_with_items(crate_id)
     if crate is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Crate not found")
@@ -60,6 +65,27 @@ def open_crate(crate_id: str, current_user: dict = Depends(get_current_user)):
 
     won_item = game.pick_weighted_item(crate["items"])
     inventory_item = repository.create_inventory_item(current_user["id"], won_item, _now_iso())
+
+    if body.auto_sell:
+        # Auto-sell settles through the same idempotent ledger path as a
+        # manual sell (keyed on this inventory item's id), it just happens
+        # immediately instead of waiting for the player to click Sell.
+        try:
+            _, new_balance, _, _ = ledger.settle_payout(
+                current_user["id"], inventory_item["sell_value_cents"], "crates", f"sell:{inventory_item['id']}",
+            )
+        except ledger.InsufficientFundsError:
+            # Payout target account missing — extremely unlikely (the wager
+            # above just succeeded against the same account) but if it
+            # happens, leave the item in inventory rather than losing it.
+            return OpenCrateResponse(item=_inventory_view(inventory_item), new_balance_cents=new_balance)
+
+        repository.mark_item_sold(inventory_item["id"], _now_iso())
+        inventory_item = repository.get_inventory_item(inventory_item["id"], current_user["id"])
+        return OpenCrateResponse(
+            item=_inventory_view(inventory_item), new_balance_cents=new_balance,
+            sold=True, payout_cents=inventory_item["sell_value_cents"],
+        )
 
     return OpenCrateResponse(item=_inventory_view(inventory_item), new_balance_cents=new_balance)
 
