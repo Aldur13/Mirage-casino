@@ -10,7 +10,7 @@
 
 .auth-wrap {
   width: 100%;
-  max-width: 760px;
+  max-width: 880px;
   text-align: center;
 }
 
@@ -24,12 +24,117 @@
   margin: 0 0 var(--space-6);
 }
 
-.auth-forms {
-  display: flex;
-  gap: var(--space-5);
-  flex-wrap: wrap;
+/* ── Landing page (pre-login) ────────────────────────────────────── */
+
+.landing { margin-bottom: var(--space-6); }
+
+.landing-intro {
+  max-width: 640px;
+  margin: 0 auto var(--space-6);
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.92rem;
+}
+
+.landing-intro code {
+  background: var(--surface-2);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.fairness-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
   text-align: left;
 }
+
+.fairness-card {
+  padding: var(--space-4);
+}
+
+.fairness-step {
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  color: var(--cyan);
+  margin-bottom: var(--space-2);
+}
+
+.fairness-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.landing-heading {
+  text-align: left;
+  margin-top: 0;
+}
+
+.landing .game-lobby-grid {
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: var(--space-6);
+}
+
+.game-tile-preview {
+  cursor: default;
+}
+
+.game-tile-preview:hover {
+  transform: none;
+  border-color: var(--stroke);
+  background: var(--surface-2);
+}
+
+@media (max-width: 860px) {
+  .fairness-grid { grid-template-columns: 1fr; }
+  .landing .game-lobby-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Tabbed login / signup ───────────────────────────────────────── */
+
+.auth-section {
+  max-width: 380px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  text-align: left;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--stroke);
+}
+
+.auth-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+}
+
+.auth-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--indigo);
+}
+
+.auth-tab:hover:not(.active) { color: var(--text); }
+
+.auth-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-panel button { margin-top: var(--space-2); }
 
 .auth-card {
   flex: 1 1 260px;
